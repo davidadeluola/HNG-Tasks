@@ -18,7 +18,8 @@ The goal of this structure is to make assessment, collaboration, and portfolio p
 
 - Testable Todo/
   - Accessible and testable Todo Item Card component
-  - Includes semantic HTML, responsive CSS, and JavaScript interactivity
+  - Expanded and updated with richer interactivity, responsive behavior, and accessibility refinements
+  - Task README was also updated to reflect the latest scope and implementation details
 - Stage-1-task-1b/
   - Accessible Profile Card component with local image upload and localStorage persistence
   - Includes semantic HTML, responsive flex layout, and JavaScript image handling
