@@ -1,56 +1,61 @@
 # Testable Todo Item Card
 
-A modern, accessible, and highly testable **Todo Card component** designed for automated testing environments. This project focuses on semantic HTML, WCAG-compliant accessibility, and robust `data-testid` implementation for CI/CD validation.
+A modern, accessible, and testable Todo Card component built for automated testing environments. The project focuses on semantic HTML, WCAG-aligned accessibility, and robust `data-testid` implementation.
 
----
+## Key Features
 
-## 🚀 Key Features
+- Test-driven structure: includes targeted `data-testid` attributes on interactive and data-driven elements for tools like Playwright, Cypress, and Vitest.
+- Accessibility first: semantic tags (`<article>`, `<time>`, `<button>`), ARIA labels, visible focus states, and keyboard-friendly controls.
+- Dynamic time tracking: relative remaining-time text (for example, "Due tomorrow" or "Overdue by 2 hours") derived from a fixed due date.
+- Responsive layout: mobile-first design that scales cleanly from small to large screens.
+- Interactive behavior: completion toggle updates visual and status state, with Edit and Delete action controls.
 
-- **Test-Driven Architecture:** Includes specific `data-testid` attributes on all interactive and data-driven elements (e.g., `test-todo-card`, `test-todo-complete-toggle`) for seamless integration with Playwright, Cypress, or Vitest.
-- **A11y First:** Built with semantic tags (`<article>`, `<time>`, `<button>`), proper ARIA labels, and full keyboard navigation support (Tab sequence: checkbox → edit → delete).
-- **Dynamic Time Tracking:** Features a relative time-remaining indicator (e.g., "Due in 3 days", "Overdue by 2 hours") calculated from a fixed deadline.
-- **Responsive Design:** Mobile-first layout that scales elegantly from 320px to 1200px using CSS Flexbox.
-- **Interactive States:** Functional checkbox toggle with visual "Done" states (strike-through) and status updates.
+## Data Attributes (Test IDs)
 
-## 📋 Data Attributes (Test IDs)
+To support automated grading and end-to-end testing, the following selectors are implemented:
 
-To facilitate automated grading and testing, the following selectors are implemented:
+| Element | Data Test ID |
+| :------ | :----------- |
+| Root Container | `data-testid="test-todo-card"` |
+| Title | `data-testid="test-todo-title"` |
+| Description | `data-testid="test-todo-description"` |
+| Priority | `data-testid="test-todo-priority"` |
+| Due Date | `data-testid="test-todo-due-date"` |
+| Remaining Time | `data-testid="test-todo-time-remaining"` |
+| Status | `data-testid="test-todo-status"` |
+| Checkbox | `data-testid="test-todo-complete-toggle"` |
+| Tags List | `data-testid="test-todo-tags"` |
+| Edit Button | `data-testid="test-todo-edit-button"` |
+| Delete Button | `data-testid="test-todo-delete-button"` |
 
-| Element            | Data Test ID                              |
-| :----------------- | :---------------------------------------- |
-| **Root Container** | `data-testid="test-todo-card"`            |
-| **Title**          | `data-testid="test-todo-title"`           |
-| **Description**    | `data-testid="test-todo-description"`     |
-| **Priority**       | `data-testid="test-todo-priority"`        |
-| **Due Date**       | `data-testid="test-todo-due-date"`        |
-| **Remaining Time** | `data-testid="test-todo-time-remaining"`  |
-| **Status**         | `data-testid="test-todo-status"`          |
-| **Checkbox**       | `data-testid="test-todo-complete-toggle"` |
-| **Tags List**      | `data-testid="test-todo-tags"`            |
-| **Edit Button**    | `data-testid="test-todo-edit-button"`     |
-| **Delete Button**  | `data-testid="test-todo-delete-button"`   |
+## Technical Implementation
 
-## 🛠 Technical Implementation
+- Semantics: uses `<article>` for the card container and `<time>` for date content.
+- Accessibility: WCAG-friendly contrast, focus-visible rings, and accessible names for controls.
+- Responsiveness: no horizontal overflow on small viewports; tags wrap using `flex-wrap`.
 
-- **Semantics:** Uses `<article>` for the card root and `<time>` for date-related content.
-- **Accessibility:** Ensure WCAG AA color contrast, visible focus rings, and accessible names for icon-only buttons.
-- **Responsiveness:** No horizontal overflow; tags utilize `flex-wrap` for multi-line support on small screens.
+## Getting Started
 
-## 🚀 Getting Started
+1. Clone the repository:
 
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/username/HNG-Tasks.git
-    ```
-2.  **Open the project:**
-    Simply open `index.html` in any modern web browser.
-3.  **Live Site:**
-    [Insert Live URL Here]
+```bash
+git clone https://github.com/username/HNG-Tasks.git
+```
 
-## ✅ Acceptance Criteria
+2. Enter the task folder:
 
-- [ ] All required `data-testid` elements are present.
-- [ ] Checkbox is keyboard-focusable and toggleable.
-- [ ] Time-remaining calculation is accurate (± 5 mins).
-- [ ] Semantic HTML markers (label, time, button) are used correctly.
-- [ ] Responsive behavior confirmed from 320px to 1200px.
+```bash
+cd "HNG-Tasks/Testable Todo"
+```
+
+3. Run locally:
+
+Open `index.html` in any modern browser.
+
+## Acceptance Criteria
+
+- [x] All required `data-testid` elements are present.
+- [x] Checkbox is keyboard-focusable and toggleable.
+- [x] Time-remaining calculation is accurate at render time (within normal client clock variance).
+- [x] Semantic HTML markers (`label`, `time`, `button`) are used correctly.
+- [x] Responsive behavior works from mobile to desktop sizes.

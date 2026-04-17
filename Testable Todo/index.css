@@ -7,10 +7,14 @@
     --muted: #4b6657;
     --line: #c8dfd0;
     --accent: #168a4b;
-    --accent-strong: #0f6e3a;
     --danger: #8b1c1c;
     --tag-bg: #e8f8ed;
     --focus: #f59e0b;
+    --pending: #5f6b77;
+    --in-progress: #0d6c9f;
+    --high: #b42318;
+    --medium: #b06d0f;
+    --low: #18794e;
 }
 
 * {
@@ -48,6 +52,7 @@ article[data-testid="test-todo-card"] {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    overflow-wrap: anywhere;
 }
 
 .header {
@@ -72,6 +77,34 @@ h2 {
     font-size: 1.15rem;
     line-height: 1.3;
     font-family: "Space Mono", Consolas, monospace;
+}
+
+.priority-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+}
+
+.priority-indicator {
+    inline-size: 0.7rem;
+    block-size: 0.7rem;
+    border-radius: 999px;
+    border: 2px solid transparent;
+}
+
+.priority-low {
+    background: #34c784;
+    box-shadow: 0 0 0 2px #ddf8eb;
+}
+
+.priority-medium {
+    background: #f2a93b;
+    box-shadow: 0 0 0 2px #fff3da;
+}
+
+.priority-high {
+    background: #df3f3f;
+    box-shadow: 0 0 0 2px #ffe4e4;
 }
 
 .owner-row {
@@ -100,6 +133,31 @@ h2 {
     font-family: "Space Mono", Consolas, monospace;
 }
 
+.collapsible-section {
+    overflow: hidden;
+    transition: max-height 160ms ease;
+}
+
+.collapsible-section.is-collapsed {
+    max-block-size: 4.6rem;
+}
+
+.expand-toggle {
+    justify-self: start;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #f7fffa;
+    color: #1b5537;
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-family: "Space Mono", Consolas, monospace;
+}
+
+.expand-toggle:hover {
+    background: #eaf9f0;
+}
+
 .profile-avatar {
     inline-size: 42px;
     block-size: 42px;
@@ -115,7 +173,7 @@ h2 {
 }
 
 .owner-text {
-    display: flex;  
+    display: flex;
     flex-direction: column;
     gap: 0.1rem;
 }
@@ -134,12 +192,6 @@ h2 {
 .completed {
     text-decoration: line-through;
     opacity: 0.75;
-}
-
-.editable-field {
-    outline: 2px dashed #8dc7a7;
-    outline-offset: 3px;
-    border-radius: 6px;
 }
 
 .priority {
@@ -179,9 +231,25 @@ p {
     font-family: "Space Mono", Consolas, monospace;
 }
 
+#timeRemaining {
+    display: inline-block;
+    margin-inline-end: 0.35rem;
+}
+
 .overdue {
     color: var(--danger);
     font-weight: 700;
+    font-family: "Space Mono", Consolas, monospace;
+}
+
+.overdue-indicator {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 0.1rem 0.45rem;
+    font-size: 0.73rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: #c92a2a;
     font-family: "Space Mono", Consolas, monospace;
 }
 
@@ -196,6 +264,27 @@ p {
     block-size: 1rem;
     margin: 0;
     accent-color: var(--accent);
+}
+
+.status-control-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.status-control-row label {
+    font-size: 0.85rem;
+    color: #1f4b34;
+    font-family: "Space Mono", Consolas, monospace;
+}
+
+.status-control-row select {
+    border: 1px solid #b9d8c5;
+    border-radius: 10px;
+    padding: 0.5rem 0.6rem;
+    background: #ffffff;
+    color: var(--text);
+    font-family: "Space Mono", Consolas, monospace;
 }
 
 .tags {
@@ -226,6 +315,49 @@ p {
 .actions {
     display: flex;
     gap: 0.6rem;
+}
+
+.edit-form {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 0.85rem;
+    background: #f8fffb;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+}
+
+.form-field {
+    display: grid;
+    gap: 0.28rem;
+}
+
+.form-field label {
+    font-size: 0.8rem;
+    color: #174531;
+    font-family: "Space Mono", Consolas, monospace;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+    inline-size: 100%;
+    border: 1px solid #b7d6c2;
+    border-radius: 10px;
+    padding: 0.55rem 0.62rem;
+    color: var(--text);
+    background: #ffffff;
+    font-family: "Lato", "Segoe UI", sans-serif;
+}
+
+.form-actions {
+    margin-block-start: 0.75rem;
+    display: flex;
+    gap: 0.55rem;
+    flex-wrap: wrap;
 }
 
 button {
@@ -261,14 +393,63 @@ button {
     transform: translateY(-2px);
 }
 
+.todo-card.state-done {
+    background: #fbfffd;
+    border-color: #d5e4dc;
+}
+
+.todo-card.state-done .subhead,
+.todo-card.state-done p,
+.todo-card.state-done .owner-text span {
+    color: #6d7f75;
+}
+
+.todo-card.state-in-progress {
+    border-inline-start: 6px solid var(--in-progress);
+}
+
+.todo-card.state-pending {
+    border-inline-start: 6px solid var(--pending);
+}
+
+.todo-card.state-overdue {
+    border-color: #eb9b9b;
+    box-shadow: 0 18px 40px rgba(201, 42, 42, 0.14);
+}
+
 button:active {
     transform: translateY(1px);
 }
 
 input:focus-visible,
-button:focus-visible {
+button:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
     outline: 3px solid var(--focus);
     outline-offset: 2px;
+}
+
+#todoStatus {
+    display: inline-block;
+    padding: 0.18rem 0.44rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-family: "Space Mono", Consolas, monospace;
+}
+
+#todoStatus.status-pending {
+    background: #edf1f5;
+    color: #3f4952;
+}
+
+#todoStatus.status-in-progress {
+    background: #e3f3fb;
+    color: #0b5a83;
+}
+
+#todoStatus.status-done {
+    background: #e6f6ec;
+    color: #23623f;
 }
 
 @media (max-width: 480px) {
@@ -285,7 +466,49 @@ button:focus-visible {
         flex: 1 1 140px;
     }
 
+    .form-actions button {
+        flex: 1 1 100%;
+    }
+
     .owner-row {
         padding: 0.5rem;
+    }
+}
+
+@media (min-width: 768px) {
+    article[data-testid="test-todo-card"] {
+        max-inline-size: 650px;
+    }
+
+    .meta {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .meta > :last-child {
+        grid-column: 1 / -1;
+    }
+
+    .status-control-row {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.7rem;
+    }
+
+    .status-control-row select {
+        inline-size: 220px;
+    }
+
+    .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .form-field:not(.two-up) {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (min-width: 1024px) {
+    article[data-testid="test-todo-card"] {
+        max-inline-size: 760px;
     }
 }
