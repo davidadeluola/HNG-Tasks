@@ -2,6 +2,10 @@
 
 A modern, accessible, and testable Todo Card component built for automated testing environments. The project focuses on semantic HTML, WCAG-aligned accessibility, and robust `data-testid` implementation.
 
+## Update Note
+
+This README has been expanded and updated to reflect the latest improvements in the Testable Todo implementation, including richer UI behavior, stronger accessibility support, and clearer testing guidance.
+
 ## Key Features
 
 - Test-driven structure: includes targeted `data-testid` attributes on interactive and data-driven elements for tools like Playwright, Cypress, and Vitest.
