@@ -1,17 +1,27 @@
 # HNG Tasks
 
-A collection of HNG task submissions and mini-projects.
+A structured repository for HNG internship tasks, frontend challenges, and practical project submissions.
 
 ## Overview
 
-This repository serves as a central workspace for frontend and web development tasks completed during HNG.
-Each task lives in its own folder and includes its own implementation files and documentation.
+This repository is the main workspace for HNG-related submissions.
+Each task is isolated in its own folder to keep implementation, review, and execution straightforward.
+
+Each task folder typically contains:
+- source files for the implementation
+- styling and interaction logic
+- task-specific documentation
+
+The goal of this structure is to make assessment, collaboration, and portfolio presentation straightforward.
 
 ## Repository Structure
 
 - Testable Todo/
-  - Accessible and testable Todo Card component
+  - Accessible and testable Todo Item Card component
   - Includes semantic HTML, responsive CSS, and JavaScript interactivity
+- Stage-1-task-1b/
+  - Accessible Profile Card component with local image upload and localStorage persistence
+  - Includes semantic HTML, responsive flex layout, and JavaScript image handling
 
 ## Getting Started
 
@@ -35,15 +45,16 @@ cd "Testable Todo"
 
 4. Run locally:
 
-Open index.html in your browser.
+Open `index.html` in your browser.
 
 ## Current Tasks
 
 | Task | Folder | Description |
 | :--- | :----- | :---------- |
-| Testable Todo Item Card | Testable Todo | A modern, accessible Todo card component with data-testid support for automated testing |
+| Testable Todo Item Card | Testable Todo | A modern, accessible Todo card component with `data-testid` support for automated testing |
+| Profile Card Component | Stage-1-task-1b | A responsive profile card with uploadable avatar, local image default, and localStorage support |
 
 ## Notes
 
-- Replace username in the clone URL with your actual GitHub username.
+- Replace `username` in the clone URL with your actual GitHub username.
 - Add new HNG tasks as separate folders at the repository root.

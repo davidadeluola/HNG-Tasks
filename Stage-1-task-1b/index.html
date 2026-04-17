@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile Card</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <main>
+        <article data-testid="test-profile-card" class="profile-card">
+            <!-- Avatar Section -->
+            <div class="profile-avatar-wrapper">
+                <figure class="profile-avatar-container">
+                    <img 
+                        src="image/potrait.webp" 
+                        alt="User profile avatar photo"
+                        data-testid="test-user-avatar"
+                        class="profile-avatar"
+                        id="profile-avatar"
+                    >
+                    <figcaption class="sr-only">Profile photo</figcaption>
+                </figure>
+                <a href="#" class="upload-link" id="upload-profile-link" aria-controls="avatar-upload" aria-label="Click to upload or change profile image">
+                    Click to upload or change profile image
+                </a>
+                <p class="upload-hint">Your new profile picture will be saved on this device.</p>
+                <input 
+                    type="file" 
+                    id="avatar-upload" 
+                    class="avatar-input" 
+                    accept="image/*"
+                    aria-label="Upload new profile picture"
+                >
+            </div>
+
+            <!-- Profile Information Section -->
+            <div class="profile-content">
+                <!-- Name -->
+                <header class="profile-header">
+                    <h1 data-testid="test-user-name" class="user-name">Adeluola Ayomide David</h1>
+                </header>
+
+                <!-- Biography -->
+                <p data-testid="test-user-bio" class="user-bio">
+                    Passionate full-stack developer and open-source enthusiast. tech lover and always eager to learn new technologies. 
+                    Building amazing web experiences, one line of code at a time.
+                </p>
+
+                <!-- Current Time -->
+                <div class="user-time-container">
+                    <span class="time-label">Current Time (ms):</span>
+                    <span 
+                        data-testid="test-user-time" 
+                        class="user-time"
+                        aria-live="polite"
+                        aria-label="Current time in milliseconds"
+                    >0</span>
+                </div>
+
+                <!-- Social Links -->
+                <nav class="social-links-nav" aria-label="Social media links">
+                    <ul data-testid="test-user-social-links" class="social-links">
+                        <li class="social-link-item">
+                            <a 
+                                href="https://twitter.com" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                data-testid="test-user-social-twitter"
+                                class="social-link"
+                                aria-label="Twitter profile (opens in new tab)"
+                            >
+                                Twitter
+                            </a>
+                        </li>
+                        <li class="social-link-item">
+                            <a 
+                                href="https://github.com" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                data-testid="test-user-social-github"
+                                class="social-link"
+                                aria-label="GitHub profile (opens in new tab)"
+                            >
+                                GitHub
+                            </a>
+                        </li>
+                        <li class="social-link-item">
+                            <a 
+                                href="https://linkedin.com" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                data-testid="test-user-social-linkedin"
+                                class="social-link"
+                                aria-label="LinkedIn profile (opens in new tab)"
+                            >
+                                LinkedIn
+                            </a>
+                        </li>
+                        <li class="social-link-item">
+                            <a 
+                                href="https://instagram.com" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                data-testid="test-user-social-instagram"
+                                class="social-link"
+                                aria-label="Instagram profile (opens in new tab)"
+                            >
+                                Instagram
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Hobbies Section -->
+                <section class="hobbies-section">
+                    <h2 class="section-title">Hobbies</h2>
+                    <ul data-testid="test-user-hobbies" class="hobbies-list">
+                        <li class="hobby-item">Photography</li>
+                        <li class="hobby-item">Hiking</li>
+                        <li class="hobby-item">Reading</li>
+                        <li class="hobby-item">Gaming</li>
+                        <li class="hobby-item">Cooking</li>
+                    </ul>
+                </section>
+
+                <!-- Dislikes Section -->
+                <section class="dislikes-section">
+                    <h2 class="section-title">Dislikes</h2>
+                    <ul data-testid="test-user-dislikes" class="dislikes-list">
+                        <li class="dislike-item">Slow internet</li>
+                        <li class="dislike-item">Procrastination</li>
+                        <li class="dislike-item">Unformatted code</li>
+                        <li class="dislike-item">Loud noise</li>
+                    </ul>
+                </section>
+            </div>
+        </article>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

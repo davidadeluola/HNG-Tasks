@@ -8,13 +8,20 @@
 </head>
 <body>
   <main>
-    <article data-testid="test-todo-card" aria-label="Todo item card">
+    <article data-testid="test-todo-card" aria-label="Todo item card" class="todo-card">
       <header class="header">
         <div>
           <p class="subhead">Testable Todo Card</p>
           <h2 data-testid="test-todo-title">Ship Stage 0 Todo Card</h2>
         </div>
-        <span class="priority" data-testid="test-todo-priority">High</span>
+        <div class="priority-wrap">
+          <span
+            data-testid="test-todo-priority-indicator"
+            class="priority-indicator priority-high"
+            aria-hidden="true"
+          ></span>
+          <span class="priority" data-testid="test-todo-priority">High</span>
+        </div>
       </header>
 
       <section class="owner-row" aria-label="Assigned staff">
@@ -27,9 +34,25 @@
 
       <section class="description-block" aria-label="Task description section">
         <h3 class="description-heading">Task Description</h3>
-        <p data-testid="test-todo-description">
-          Build a semantic, testable todo component with proper accessibility labels and dynamic status behavior.
-        </p>
+        <div
+          id="todoCollapsibleSection"
+          data-testid="test-todo-collapsible-section"
+          class="collapsible-section"
+        >
+          <p id="todoDescriptionText" data-testid="test-todo-description">
+            Build a semantic, testable todo component with proper accessibility labels and dynamic status behavior. Extend the card with editable content, synchronized status transitions, priority-driven visual indicators, an accessible expand and collapse pattern for longer content, and a time-aware overdue state that updates continuously.
+          </p>
+        </div>
+        <button
+          type="button"
+          id="expandToggle"
+          class="expand-toggle"
+          data-testid="test-todo-expand-toggle"
+          aria-expanded="false"
+          aria-controls="todoCollapsibleSection"
+        >
+          Expand
+        </button>
       </section>
 
       <hr class="divider" />
@@ -41,7 +64,10 @@
         </div>
         <div>
           <strong>Time Remaining:</strong>
-          <span data-testid="test-todo-time-remaining" id="timeRemaining">Calculating...</span>
+          <span data-testid="test-todo-time-remaining" id="timeRemaining" aria-live="polite">Calculating...</span>
+          <span data-testid="test-todo-overdue-indicator" id="todoOverdueIndicator" class="overdue-indicator" hidden>
+            Overdue
+          </span>
         </div>
         <div>
           <strong>Status:</strong>
@@ -54,6 +80,15 @@
         <label for="todoCompleteToggle">Mark task as complete</label>
       </div>
 
+      <div class="status-control-row">
+        <label for="todoStatusControl">Set status</label>
+        <select id="todoStatusControl" data-testid="test-todo-status-control" aria-label="Todo status control">
+          <option value="Pending">Pending</option>
+          <option value="In Progress" selected>In Progress</option>
+          <option value="Done">Done</option>
+        </select>
+      </div>
+
       <ul data-testid="test-todo-tags" class="tags" aria-label="Todo tags">
         <li>HNG</li>
         <li>Stage 0</li>
@@ -62,9 +97,66 @@
       </ul>
 
       <div class="actions">
-        <button data-testid="test-todo-edit-button" type="button" class="edit-btn" id="editBtn">Edit</button>
+        <button
+          data-testid="test-todo-edit-button"
+          type="button"
+          class="edit-btn"
+          id="editBtn"
+          aria-controls="todoEditForm"
+          aria-expanded="false"
+        >
+          Edit
+        </button>
         <button data-testid="test-todo-delete-button" type="button" class="delete-btn" id="deleteBtn">Delete</button>
       </div>
+
+      <form data-testid="test-todo-edit-form" id="todoEditForm" class="edit-form" hidden>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="editTitleInput">Title</label>
+            <input
+              id="editTitleInput"
+              data-testid="test-todo-edit-title-input"
+              type="text"
+              required
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="editDescriptionInput">Description</label>
+            <textarea
+              id="editDescriptionInput"
+              data-testid="test-todo-edit-description-input"
+              rows="4"
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-field two-up">
+            <label for="editPrioritySelect">Priority</label>
+            <select id="editPrioritySelect" data-testid="test-todo-edit-priority-select">
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+
+          <div class="form-field two-up">
+            <label for="editDueDateInput">Due Date</label>
+            <input
+              id="editDueDateInput"
+              data-testid="test-todo-edit-due-date-input"
+              type="datetime-local"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button data-testid="test-todo-save-button" type="submit" class="edit-btn">Save</button>
+          <button data-testid="test-todo-cancel-button" type="button" class="delete-btn" id="cancelEditBtn">Cancel</button>
+        </div>
+      </form>
     </article>
   </main>
   <script src="script.js" defer></script>
