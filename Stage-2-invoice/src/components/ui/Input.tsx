@@ -71,11 +71,11 @@ function FieldLabel({ label, htmlFor, helperText, className }: FieldLabelProps) 
 
 function fieldStateClass(visualState: FieldVisualState, hasError: boolean) {
 	if (hasError || visualState === "error") {
-		return "border-(--color-danger) text-(--color-surface-dark) focus:border-(--color-danger) focus:ring-(--color-danger)/30";
+		return "border-(--color-danger) text-(--color-surface-dark) focus:border-(--color-danger) focus:ring-(--color-danger)/30 dark:focus:ring-0 dark:focus-visible:ring-0 dark:focus-visible:outline-none";
 	}
 
 	if (visualState === "active") {
-		return "border-(--color-primary-hover) text-(--color-surface-dark) focus:border-(--color-primary) focus:ring-(--color-primary)/30";
+		return "border-(--color-primary-hover) text-(--color-surface-dark) focus:border-(--color-primary) focus:ring-(--color-primary)/30 dark:focus:ring-0 dark:focus-visible:ring-0 dark:focus-visible:outline-none";
 	}
 
 	if (visualState === "disabled") {
@@ -86,7 +86,7 @@ function fieldStateClass(visualState: FieldVisualState, hasError: boolean) {
 		return "border-(--color-border-soft) text-(--color-surface-dark)";
 	}
 
-	return "border-(--color-border-soft) text-(--color-surface-dark) focus:border-(--color-primary-hover) focus:ring-(--color-primary-hover)/25";
+	return "border-(--color-border-soft) text-(--color-surface-dark) focus:border-(--color-primary-hover) focus:ring-(--color-primary-hover)/25 dark:focus:ring-0 dark:focus-visible:ring-0 dark:focus-visible:outline-none";
 }
 
 function fieldIconClass(visualState: FieldVisualState, hasError: boolean) {
@@ -127,7 +127,7 @@ export function TextInput({
 				id={inputId}
 				disabled={isDisabled}
 				className={twMerge(
-					"typo-body h-12 w-full rounded-sm border bg-(--ui-surface) px-4 font-semibold outline-none transition-colors duration-300 ease-out",
+					"typo-body h-12 w-full rounded-sm border bg-(--ui-surface) px-4 font-semibold outline-none focus-visible:outline-none transition-colors duration-300 ease-out",
 					fieldStateClass(visualState, hasError),
 					className,
 				)}
@@ -195,7 +195,7 @@ export function SelectInput({
 					aria-expanded={isOpen}
 					onClick={() => setIsOpen((value) => !value)}
 					className={twMerge(
-						"typo-body flex h-12 w-full items-center justify-between rounded-sm border bg-(--ui-surface) px-4 text-left outline-none transition-colors duration-300 ease-out",
+						"typo-body flex h-12 w-full items-center justify-between rounded-sm border bg-(--ui-surface) px-4 text-left outline-none focus-visible:outline-none transition-colors duration-300 ease-out",
 						fieldStateClass(visualState, hasError),
 						className,
 					)}
@@ -282,7 +282,7 @@ export function DateInput({
 					type="date"
 					disabled={isDisabled}
 					className={twMerge(
-						"typo-body h-12 w-full rounded-sm border bg-(--ui-surface) px-4 pr-10 outline-none transition-colors duration-300 ease-out scheme-light [&::-webkit-calendar-picker-indicator]:opacity-0",
+						"typo-body h-12 w-full rounded-sm border bg-(--ui-surface) px-4 pr-10 outline-none focus-visible:outline-none transition-colors duration-300 ease-out scheme-light dark:scheme-dark [&::-webkit-calendar-picker-indicator]:opacity-0",
 						fieldStateClass(visualState, hasError),
 						className,
 					)}

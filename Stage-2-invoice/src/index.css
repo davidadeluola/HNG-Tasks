@@ -208,6 +208,32 @@ html.dark body {
   width: fit-content;
 }
 
+.modal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(124, 93, 250, 0.38) transparent;
+}
+
+.modal-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(124, 93, 250, 0.38);
+  border-radius: 999px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 93, 250, 0.55);
+}
+
+html[data-theme="dark"] .modal-scroll {
+  scrollbar-color: rgba(124, 93, 250, 0.5) transparent;
+}
+
 @media (max-width: 900px) {
   .typography-layout {
     grid-template-columns: 1fr;

@@ -15,7 +15,7 @@ export function Sidebar() {
       {/* Top Logo Section */}
       <div className="group relative flex h-25.75 w-full cursor-pointer items-center justify-center overflow-hidden rounded-r-[20px] bg-[#7C5DFA] transition-all duration-300 ease-out hover:brightness-110">
         {/* The bottom lighter purple overlap */}
-        <div className="absolute bottom-0 left-0 h-1/2 w-full rounded-tl-[20px] bg-[#9277FF] transition-all duration-300 ease-out " />
+        <div className="absolute bottom-0 left-0 h-1/2 w-full rounded-tl-[20px] bg-[#9277FF] transition-all duration-300 ease-out" />
 
         {/* The Logo Icon */}
         <div className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full transition-transform duration-300 ease-out">

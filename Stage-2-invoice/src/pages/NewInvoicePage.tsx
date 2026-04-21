@@ -3,7 +3,7 @@ import { NewInvoicePage as NewInvoiceScreen } from '../components/pages/dashboar
 
 export default function NewInvoicePage() {
   return (
-    <AppLayout>
+    <AppLayout showChrome={false}>
       <NewInvoiceScreen />
     </AppLayout>
   )

@@ -28,7 +28,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   addItem:
     "bg-(--color-surface-soft) text-(--color-text-subtle) hover:bg-(--color-border-soft) focus-visible:ring-(--color-text-subtle) dark:bg-(--color-surface-dark-hover) dark:text-(--color-border-soft) dark:hover:bg-(--color-surface-dark)",
   ghost:
-    "border border-(--color-border-soft) bg-(--color-surface-soft) text-(--color-text-subtle) hover:border-(--color-border-soft) hover:bg-(--color-border-soft) focus-visible:ring-(--color-text-subtle)",
+    "border border-(--color-border-soft) bg-(--color-surface-soft) text-(--color-text-subtle) hover:border-(--color-border-soft) hover:bg-(--color-border-soft) focus-visible:ring-(--color-text-subtle)  dark:bg-(--color-surface-dark-hover) dark:text-(--color-border-soft) dark:hover:bg-(--color-surface-dark) dark:hover:text-white",
 };
 
 function Button({
