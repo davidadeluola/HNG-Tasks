@@ -71,22 +71,22 @@ function FieldLabel({ label, htmlFor, helperText, className }: FieldLabelProps) 
 
 function fieldStateClass(visualState: FieldVisualState, hasError: boolean) {
 	if (hasError || visualState === "error") {
-		return "border-(--color-danger) text-(--color-surface-dark) focus:border-(--color-danger) focus:ring-(--color-danger)/30";
+		return "border-(--color-danger) text-[#0C0E16] focus:border-(--color-danger) dark:text-white dark:focus:ring-(--color-danger)/35";
 	}
 
 	if (visualState === "active") {
-		return "border-(--color-primary-hover) text-(--color-surface-dark) focus:border-(--color-primary) focus:ring-(--color-primary)/30";
+		return "border-[#7C5DFA] text-[#0C0E16] focus:border-[#7C5DFA] dark:border-(--color-primary-hover) dark:text-white dark:focus:border-(--color-primary) dark:focus:ring-(--color-primary)/35";
 	}
 
 	if (visualState === "disabled") {
-		return "border-(--color-border-soft) bg-(--color-surface-soft) text-(--color-text-subtle) opacity-80";
+		return "border-[#DFE3FA] bg-(--color-surface-soft) text-[#0C0E16] opacity-80 dark:border-(--color-surface-dark-hover) dark:bg-(--color-surface-dark-hover) dark:text-white dark:opacity-70";
 	}
 
 	if (visualState === "filled") {
-		return "border-(--color-border-soft) text-(--color-surface-dark)";
+		return "border-[#DFE3FA] text-[#0C0E16] dark:border-(--color-surface-dark-hover) dark:text-white";
 	}
 
-	return "border-(--color-border-soft) text-(--color-surface-dark) focus:border-(--color-primary-hover) focus:ring-(--color-primary-hover)/25";
+	return "border-[#DFE3FA] text-[#0C0E16] focus:border-[#7C5DFA] dark:border-(--color-surface-dark-hover) dark:text-white dark:focus:border-(--color-primary) dark:focus:ring-(--color-primary)/35";
 }
 
 function fieldIconClass(visualState: FieldVisualState, hasError: boolean) {
@@ -127,7 +127,7 @@ export function TextInput({
 				id={inputId}
 				disabled={isDisabled}
 				className={twMerge(
-					"typo-body h-12 w-full rounded-sm border bg-(--ui-surface) px-4 font-semibold outline-none transition-colors duration-300 ease-out",
+					"form-control typo-body h-12 w-full rounded-sm border border-[#DFE3FA] bg-(--ui-surface) px-4 font-bold text-dark outline-none focus-visible:outline-none transition-colors duration-300 ease-out dark:text-white",
 					fieldStateClass(visualState, hasError),
 					className,
 				)}
@@ -195,12 +195,12 @@ export function SelectInput({
 					aria-expanded={isOpen}
 					onClick={() => setIsOpen((value) => !value)}
 					className={twMerge(
-						"typo-body flex h-12 w-full items-center justify-between rounded-sm border bg-(--ui-surface) px-4 text-left outline-none transition-colors duration-300 ease-out",
+						"form-control typo-body flex h-12 w-full items-center justify-between rounded-sm border border-[#DFE3FA] bg-(--ui-surface) px-4 text-left outline-none focus-visible:outline-none transition-colors duration-300 ease-out",
 						fieldStateClass(visualState, hasError),
 						className,
 					)}
 				>
-					<span className="font-semibold text-(--color-surface-dark)">{selectedOption?.label ?? ""}</span>
+					<span className="font-semibold text-(--ui-text)">{selectedOption?.label ?? ""}</span>
 					<ChevronDown size={16} strokeWidth={2.25} className={fieldIconClass(visualState, hasError)} />
 				</button>
 
@@ -219,7 +219,7 @@ export function SelectInput({
 													"typo-body w-full px-5 py-4 text-left font-bold transition-colors duration-200 ease-out",
 												isSelected
 													? "bg-(--color-primary) text-white"
-													: "text-(--color-surface-dark) hover:bg-(--color-primary-hover)/10 hover:text-(--color-primary)",
+													: "text-(--ui-text) hover:bg-(--color-primary-hover)/10 hover:text-(--color-primary)",
 											)}
 										>
 											{option.label}
@@ -282,7 +282,7 @@ export function DateInput({
 					type="date"
 					disabled={isDisabled}
 					className={twMerge(
-						"typo-body h-12 w-full rounded-sm border bg-(--ui-surface) px-4 pr-10 outline-none transition-colors duration-300 ease-out scheme-light [&::-webkit-calendar-picker-indicator]:opacity-0",
+						"form-control typo-body h-12 w-full rounded-sm border border-[#DFE3FA] bg-(--ui-surface) px-4 pr-10 outline-none focus-visible:outline-none transition-colors duration-300 ease-out scheme-light dark:scheme-dark [&::-webkit-calendar-picker-indicator]:opacity-0",
 						fieldStateClass(visualState, hasError),
 						className,
 					)}

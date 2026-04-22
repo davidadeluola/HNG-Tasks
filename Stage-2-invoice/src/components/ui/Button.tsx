@@ -7,8 +7,11 @@ export type ButtonVariant =
   | "edit"
   | "saveDraft"
   | "delete"
+  | "danger"
+  | "hide"
   | "addItem"
-  | "ghost";
+  | "ghost"
+  | "modalGhost";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
@@ -25,10 +28,16 @@ const variantClasses: Record<ButtonVariant, string> = {
     "bg-(--color-surface-dark-hover) text-(--color-text-muted) hover:bg-(--color-bg-dark-deep) hover:text-(--color-border-soft) focus-visible:ring-(--color-surface-dark-hover) dark:bg-(--color-surface-dark-hover) dark:text-(--color-border-soft) dark:hover:bg-(--color-surface-dark)",
   delete:
     "bg-(--color-danger) text-white hover:bg-(--color-danger-soft) focus-visible:ring-(--color-danger)",
+  danger:
+    "bg-(--color-danger) text-white hover:bg-(--color-danger-soft) focus-visible:ring-(--color-danger)",
+  hide:
+    "bg-transparent text-(--ui-muted) hover:text-(--ui-text) focus-visible:ring-(--ui-muted)",
   addItem:
     "bg-(--color-surface-soft) text-(--color-text-subtle) hover:bg-(--color-border-soft) focus-visible:ring-(--color-text-subtle) dark:bg-(--color-surface-dark-hover) dark:text-(--color-border-soft) dark:hover:bg-(--color-surface-dark)",
   ghost:
-    "border border-(--color-border-soft) bg-(--color-surface-soft) text-(--color-text-subtle) hover:border-(--color-border-soft) hover:bg-(--color-border-soft) focus-visible:ring-(--color-text-subtle)",
+    "border border-(--color-border-soft) bg-(--color-surface-soft) text-(--color-text-subtle) hover:border-(--color-border-soft) hover:bg-(--color-border-soft) focus-visible:ring-(--color-text-subtle) dark:border-(--color-surface-dark-hover) dark:bg-(--color-surface-dark-hover) dark:text-(--color-border-soft) dark:hover:bg-(--color-surface-dark) dark:hover:text-white dark:focus-visible:ring-0 dark:focus-visible:ring-offset-0",
+  modalGhost:
+    "bg-(--color-surface-soft) text-(--color-text-subtle) hover:bg-(--color-border-soft) focus-visible:ring-(--color-text-subtle) dark:bg-(--color-surface-dark-hover) dark:text-(--color-border-soft) dark:hover:bg-(--color-surface-dark) dark:hover:text-white dark:focus-visible:ring-0 dark:focus-visible:ring-offset-0",
 };
 
 function Button({

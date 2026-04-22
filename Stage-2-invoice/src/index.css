@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 :root {
   --color-primary: #7c5dfa;
   --color-primary-hover: #9277ff;
@@ -105,7 +107,7 @@ body {
 
 html.dark body {
   background: var(--ui-bg);
-  color: var(--ui-text);
+  /* color: var(--ui-text); */
 }
 
 /* Typography Utilities */
@@ -206,6 +208,35 @@ html.dark body {
   border-radius: 10px;
   padding: 10px 12px;
   width: fit-content;
+}
+
+.modal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #DFE3FA transparent;
+  scrollbar-gutter: stable;
+
+}
+
+.modal-scroll::-webkit-scrollbar {
+  inline-size: 8px;
+}
+
+.modal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(124, 93, 250, 0.38);
+  border-radius: 999px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 93, 250, 0.55);
+}
+
+html[data-theme="dark"] .modal-scroll {
+  scrollbar-color: #252945 transparent;
+  scrollbar-gutter: stable;
 }
 
 @media (max-width: 900px) {

@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import Button from "../../ui/Button";
 import { FilterStateInput } from "../../ui/Input";
 import { useInvoices } from "../../../hooks/useInvoices";
-import { ROUTES } from "../../../routes/paths";
 import { formatCurrency, formatDisplayDate } from "../../../utils/formatters";
 import type { InvoiceStatus } from "../../../types/invoice";
+import { CreateInvoiceModal } from "./CreateInvoiceModal";
 
 const STATUS_OPTIONS: { label: string; value: InvoiceStatus }[] = [
   { label: "Draft", value: "draft" },
@@ -13,7 +13,8 @@ const STATUS_OPTIONS: { label: string; value: InvoiceStatus }[] = [
 ];
 
 const STATUS_PILL_CLASSES: Record<InvoiceStatus, string> = {
-  draft: "bg-[rgba(55,59,83,0.08)] text-[#373B53] dark:bg-[rgba(223,227,250,0.08)] dark:text-[#DFE3FA]",
+  draft:
+    "bg-[rgba(55,59,83,0.08)] text-[#373B53] dark:bg-[rgba(223,227,250,0.08)] dark:text-[#DFE3FA]",
   pending: "bg-[rgba(255,143,0,0.12)] text-[#FF8F00]",
   paid: "bg-[rgba(51,214,159,0.12)] text-[#33D69F]",
 };
@@ -23,10 +24,15 @@ function getStatusLabel(status: InvoiceStatus) {
 }
 
 export default function DashboardOverview() {
-  const { invoices, filteredInvoices, activeFilters, setFilters, isLoading } = useInvoices();
-  const visibleInvoices = activeFilters.size === 0 ? invoices : filteredInvoices;
+  const { invoices, filteredInvoices, activeFilters, setFilters, isLoading } =
+    useInvoices();
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const visibleInvoices =
+    activeFilters.size === 0 ? invoices : filteredInvoices;
   const invoiceCountLabel =
-    visibleInvoices.length === 1 ? "1 invoice" : `${visibleInvoices.length} invoices`;
+    visibleInvoices.length === 1
+      ? "1 invoice"
+      : `${visibleInvoices.length} invoices`;
 
   return (
     <section className="grid gap-8">
@@ -36,20 +42,27 @@ export default function DashboardOverview() {
             Invoices
           </h2>
           <p className="typo-body mt-2 font-medium text-[15px] text-(--ui-muted)">
-            {isLoading ? "Loading invoices..." : `There are ${invoiceCountLabel}`}
+            {isLoading
+              ? "Loading invoices..."
+              : `There are ${invoiceCountLabel}`}
           </p>
         </div>
 
         <div className="flex items-center gap-6">
           <FilterStateInput
             label="Filter by status"
-            options={STATUS_OPTIONS.map((option) => ({ label: option.label, value: option.value }))}
+            options={STATUS_OPTIONS.map((option) => ({
+              label: option.label,
+              value: option.value,
+            }))}
             value={new Set(Array.from(activeFilters))}
-            onChange={(nextValue) => setFilters(new Set(Array.from(nextValue) as InvoiceStatus[]))}
+            onChange={(nextValue) =>
+              setFilters(new Set(Array.from(nextValue) as InvoiceStatus[]))
+            }
           />
-          <Link to={ROUTES.newInvoice}>
-            <Button variant="primary">New Invoice</Button>
-          </Link>
+          <Button variant="primary" onClick={() => setIsCreateModalOpen(true)}>
+            New Invoice
+          </Button>
         </div>
       </div>
 
@@ -69,7 +82,8 @@ export default function DashboardOverview() {
               There is nothing here
             </h3>
             <p className="typo-body mt-4 text-(--ui-muted)">
-              Create an invoice by clicking the New Invoice button and get started
+              Create an invoice by clicking the New Invoice button and get
+              started
             </p>
           </div>
         </div>
@@ -89,15 +103,23 @@ export default function DashboardOverview() {
                   <span className="text-(--ui-muted)">#</span>
                   {invoice.id}
                 </p>
-                <p className="typo-body text-(--ui-muted)">Due {formatDisplayDate(invoice.paymentDue)}</p>
+                <p className="typo-body text-(--ui-muted)">
+                  Due {formatDisplayDate(invoice.paymentDue)}
+                </p>
               </div>
 
-              <p className="typo-body text-(--ui-muted)">{invoice.clientName}</p>
+              <p className="typo-body text-(--ui-muted)">
+                {invoice.clientName}
+              </p>
 
-              <p className="typo-heading-s text-(--ui-text)">{formatCurrency(invoice.total)}</p>
+              <p className="typo-heading-s text-(--ui-text)">
+                {formatCurrency(invoice.total)}
+              </p>
 
               <p
-                className={`inline-flex min-w-26 items-center justify-center gap-2 rounded-md px-3 py-3 text-[15px] font-bold tracking-[-0.25px] ${STATUS_PILL_CLASSES[invoice.status]}`}
+                className={`inline-flex min-w-26 items-center justify-center gap-2 rounded-md px-3 py-3 text-[15px] font-bold tracking-[-0.25px] ${
+                  STATUS_PILL_CLASSES[invoice.status]
+                }`}
               >
                 <span className="h-2 w-2 rounded-full bg-current" />
                 {getStatusLabel(invoice.status)}
@@ -106,6 +128,11 @@ export default function DashboardOverview() {
           ))}
         </div>
       )}
+
+      <CreateInvoiceModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      />
     </section>
   );
 }
