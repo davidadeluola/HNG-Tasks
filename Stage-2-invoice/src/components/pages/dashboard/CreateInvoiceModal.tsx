@@ -9,43 +9,58 @@ import {
   validateInvoiceInput,
   type ValidationErrors,
 } from "../../../utils/validators";
-import type { InvoiceInput, InvoiceStatus } from "../../../types/invoice";
+import type { Invoice, InvoiceInput, InvoiceStatus } from "../../../types/invoice";
 
 type CreateInvoiceModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  invoice?: Invoice | null;
 };
 
 type ItemState = InvoiceInput["items"][number];
+const MODAL_ERROR_TEXT_CLASS = "mt-1 text-[11px] leading-4 tracking-[-0.05px]";
 
-function buildInitialInvoice(): InvoiceInput {
-  return {
-    createdAt: new Date().toISOString().slice(0, 10),
-    paymentTerms: 7,
-    description: "",
-    clientName: "",
-    clientEmail: "",
-    senderAddress: {
-      street: "19 Union Terrace",
-      city: "London",
-      postCode: "E1 3EZ",
-      country: "United Kingdom",
-    },
-    clientAddress: {
-      street: "",
-      city: "",
-      postCode: "",
-      country: "",
-    },
-    items: [
-      {
-        id: "item-1",
-        name: "",
-        quantity: 1,
-        price: 0,
-        total: 0,
+function buildInvoiceInput(source?: Invoice | null): InvoiceInput {
+  if (!source) {
+    return {
+      createdAt: new Date().toISOString().slice(0, 10),
+      paymentTerms: 7,
+      description: "",
+      clientName: "",
+      clientEmail: "",
+      senderAddress: {
+        street: "19 Union Terrace",
+        city: "London",
+        postCode: "E1 3EZ",
+        country: "United Kingdom",
       },
-    ],
+      clientAddress: {
+        street: "",
+        city: "",
+        postCode: "",
+        country: "",
+      },
+      items: [
+        {
+          id: "item-1",
+          name: "",
+          quantity: 1,
+          price: 0,
+          total: 0,
+        },
+      ],
+    };
+  }
+
+  return {
+    createdAt: source.createdAt,
+    paymentTerms: source.paymentTerms,
+    description: source.description,
+    clientName: source.clientName,
+    clientEmail: source.clientEmail,
+    senderAddress: { ...source.senderAddress },
+    clientAddress: { ...source.clientAddress },
+    items: source.items.map((item) => ({ ...item })),
   };
 }
 
@@ -56,14 +71,18 @@ function getFieldError(errors: ValidationErrors, field: string) {
 export function CreateInvoiceModal({
   isOpen,
   onClose,
+  invoice,
 }: CreateInvoiceModalProps) {
-  const { createInvoice } = useInvoices();
-  const [invoice, setInvoice] = useState<InvoiceInput>(buildInitialInvoice);
+  const { createInvoice, updateInvoice } = useInvoices();
+  const isEditing = Boolean(invoice);
+  const [formInvoice, setFormInvoice] = useState<InvoiceInput>(() =>
+    buildInvoiceInput(invoice),
+  );
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isSubmitting, setIsSubmitting] = useState<InvoiceStatus | null>(null);
 
   function resetForm() {
-    setInvoice(buildInitialInvoice());
+    setFormInvoice(buildInvoiceInput(null));
     setErrors({});
     setIsSubmitting(null);
   }
@@ -77,7 +96,7 @@ export function CreateInvoiceModal({
     field: K,
     value: InvoiceInput[K]
   ) {
-    setInvoice((current) => ({ ...current, [field]: value }));
+    setFormInvoice((current) => ({ ...current, [field]: value }));
   }
 
   function updateAddress(
@@ -85,7 +104,7 @@ export function CreateInvoiceModal({
     field: string,
     value: string
   ) {
-    setInvoice((current) => ({
+    setFormInvoice((current) => ({
       ...current,
       [section]: {
         ...current[section],
@@ -99,7 +118,7 @@ export function CreateInvoiceModal({
     field: keyof ItemState,
     value: string | number
   ) {
-    setInvoice((current) => ({
+    setFormInvoice((current) => ({
       ...current,
       items: current.items.map((item, itemIndex) =>
         itemIndex === index
@@ -118,7 +137,7 @@ export function CreateInvoiceModal({
   }
 
   function addItem() {
-    setInvoice((current) => ({
+    setFormInvoice((current) => ({
       ...current,
       items: [
         ...current.items,
@@ -134,7 +153,7 @@ export function CreateInvoiceModal({
   }
 
   function removeItem(index: number) {
-    setInvoice((current) => ({
+    setFormInvoice((current) => ({
       ...current,
       items:
         current.items.length === 1
@@ -144,7 +163,7 @@ export function CreateInvoiceModal({
   }
 
   async function handleSubmit(status: InvoiceStatus) {
-    const nextErrors = validateInvoiceInput(invoice);
+    const nextErrors = validateInvoiceInput(formInvoice);
     setErrors(nextErrors);
 
     if (Object.keys(nextErrors).length > 0) {
@@ -152,7 +171,11 @@ export function CreateInvoiceModal({
     }
 
     setIsSubmitting(status);
-    await createInvoice(invoice, status);
+    if (invoice) {
+      await updateInvoice(invoice.id, formInvoice, status);
+    } else {
+      await createInvoice(formInvoice, status);
+    }
     handleClose();
   }
 
@@ -167,7 +190,9 @@ export function CreateInvoiceModal({
       panelClassName="max-w-200 rounded-none"
     >
       <form className="grid gap-10 pb-24">
-        <h1 className="typo-heading-m text-(--ui-text)">New Invoice</h1>
+        <h1 className="typo-heading-m text-(--ui-text)">
+          {isEditing ? `Edit #${invoice?.id}` : "New Invoice"}
+        </h1>
 
         <section className="grid gap-6">
           <h2 className="text-xs font-bold tracking-[-0.2px] text-(--color-primary)">
@@ -175,7 +200,7 @@ export function CreateInvoiceModal({
           </h2>
           <TextInput
             label="Street Address"
-            value={invoice.senderAddress.street}
+            value={formInvoice.senderAddress.street}
             onChange={(event) =>
               updateAddress("senderAddress", "street", event.target.value)
             }
@@ -183,21 +208,21 @@ export function CreateInvoiceModal({
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <TextInput
               label="City"
-              value={invoice.senderAddress.city}
+              value={formInvoice.senderAddress.city}
               onChange={(event) =>
                 updateAddress("senderAddress", "city", event.target.value)
               }
             />
             <TextInput
               label="Post Code"
-              value={invoice.senderAddress.postCode}
+              value={formInvoice.senderAddress.postCode}
               onChange={(event) =>
                 updateAddress("senderAddress", "postCode", event.target.value)
               }
             />
             <TextInput
               label="Country"
-              value={invoice.senderAddress.country}
+              value={formInvoice.senderAddress.country}
               onChange={(event) =>
                 updateAddress("senderAddress", "country", event.target.value)
               }
@@ -211,20 +236,22 @@ export function CreateInvoiceModal({
           </h2>
           <TextInput
             label="Client's Name"
-            value={invoice.clientName}
+            value={formInvoice.clientName}
             onChange={(event) => updateField("clientName", event.target.value)}
             errorText={getFieldError(errors, "clientName")}
+            errorTextClassName={MODAL_ERROR_TEXT_CLASS}
           />
           <TextInput
             label="Client's Email"
             type="email"
-            value={invoice.clientEmail}
+            value={formInvoice.clientEmail}
             onChange={(event) => updateField("clientEmail", event.target.value)}
             errorText={getFieldError(errors, "clientEmail")}
+            errorTextClassName={MODAL_ERROR_TEXT_CLASS}
           />
           <TextInput
             label="Street Address"
-            value={invoice.clientAddress.street}
+            value={formInvoice.clientAddress.street}
             onChange={(event) =>
               updateAddress("clientAddress", "street", event.target.value)
             }
@@ -233,21 +260,21 @@ export function CreateInvoiceModal({
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <TextInput
               label="City"
-              value={invoice.clientAddress.city}
+              value={formInvoice.clientAddress.city}
               onChange={(event) =>
                 updateAddress("clientAddress", "city", event.target.value)
               }
             />
             <TextInput
               label="Post Code"
-              value={invoice.clientAddress.postCode}
+              value={formInvoice.clientAddress.postCode}
               onChange={(event) =>
                 updateAddress("clientAddress", "postCode", event.target.value)
               }
             />
             <TextInput
               label="Country"
-              value={invoice.clientAddress.country}
+              value={formInvoice.clientAddress.country}
               onChange={(event) =>
                 updateAddress("clientAddress", "country", event.target.value)
               }
@@ -257,13 +284,13 @@ export function CreateInvoiceModal({
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <DateInput
               label="Invoice Date"
-              value={invoice.createdAt}
+              value={formInvoice.createdAt}
               onChange={(event) => updateField("createdAt", event.target.value)}
               errorText={getFieldError(errors, "createdAt")}
             />
             <SelectInput
               label="Payment Terms"
-              value={String(invoice.paymentTerms)}
+              value={String(formInvoice.paymentTerms)}
               options={PAYMENT_TERMS_OPTIONS.map((term) => ({
                 label: `Net ${term} Day${term > 1 ? "s" : ""}`,
                 value: String(term),
@@ -276,9 +303,10 @@ export function CreateInvoiceModal({
 
           <TextInput
             label="Project Description"
-            value={invoice.description}
+            value={formInvoice.description}
             onChange={(event) => updateField("description", event.target.value)}
             errorText={getFieldError(errors, "description")}
+            errorTextClassName={MODAL_ERROR_TEXT_CLASS}
           />
         </section>
 
@@ -301,7 +329,7 @@ export function CreateInvoiceModal({
           </div>
 
           <div className="grid gap-4">
-            {invoice.items.map((item, index) => {
+            {formInvoice.items.map((item, index) => {
               const lineTotal = item.quantity * item.price;
 
               return (
@@ -316,6 +344,7 @@ export function CreateInvoiceModal({
                       updateItem(index, "name", event.target.value)
                     }
                     errorText={getFieldError(errors, `items.${index}.name`)}
+                    errorTextClassName={MODAL_ERROR_TEXT_CLASS}
                     containerClassName="sm:[&>div]:hidden"
                   />
                   <TextInput
@@ -327,6 +356,7 @@ export function CreateInvoiceModal({
                       updateItem(index, "quantity", Number(event.target.value))
                     }
                     errorText={getFieldError(errors, `items.${index}.quantity`)}
+                    errorTextClassName={MODAL_ERROR_TEXT_CLASS}
                     containerClassName="sm:[&>div]:hidden"
                   />
                   <TextInput
@@ -338,6 +368,7 @@ export function CreateInvoiceModal({
                       updateItem(index, "price", Number(event.target.value))
                     }
                     errorText={getFieldError(errors, `items.${index}.price`)}
+                    errorTextClassName={MODAL_ERROR_TEXT_CLASS}
                     containerClassName="sm:[&>div]:hidden"
                   />
 
@@ -379,18 +410,10 @@ export function CreateInvoiceModal({
         <footer className="sticky bottom-0 -mx-5 border-t border-(--ui-border) bg-(--ui-bg) px-5 pb-1 pt-5 md:-mx-7 md:px-7">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <Button variant="modalGhost" type="button" onClick={handleClose}>
-              Discard
+              {isEditing ? "Cancel" : "Discard"}
             </Button>
 
-            <div className="flex flex-wrap items-center gap-2">
-              <Button
-                variant="saveDraft"
-                type="button"
-                onClick={() => handleSubmit("draft")}
-                disabled={isSubmitting !== null}
-              >
-                {isSubmitting === "draft" ? "Saving..." : "Save as Draft"}
-              </Button>
+            {isEditing ? (
               <Button
                 variant="primary"
                 leftIcon={null}
@@ -398,9 +421,29 @@ export function CreateInvoiceModal({
                 onClick={() => handleSubmit("pending")}
                 disabled={isSubmitting !== null}
               >
-                {isSubmitting === "pending" ? "Saving..." : "Save & Send"}
+                {isSubmitting === "pending" ? "Saving..." : "Save Changes"}
               </Button>
-            </div>
+            ) : (
+              <div className="flex flex-wrap items-center gap-2">
+                <Button
+                  variant="saveDraft"
+                  type="button"
+                  onClick={() => handleSubmit("draft")}
+                  disabled={isSubmitting !== null}
+                >
+                  {isSubmitting === "draft" ? "Saving..." : "Save as Draft"}
+                </Button>
+                <Button
+                  variant="primary"
+                  leftIcon={null}
+                  type="button"
+                  onClick={() => handleSubmit("pending")}
+                  disabled={isSubmitting !== null}
+                >
+                  {isSubmitting === "pending" ? "Saving..." : "Save & Send"}
+                </Button>
+              </div>
+            )}
           </div>
         </footer>
       </form>

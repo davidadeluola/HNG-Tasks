@@ -39,7 +39,7 @@ export function validateInvoiceInput(input: InvoiceInput): ValidationErrors {
       errors[`items.${index}.quantity`] = 'Quantity must be greater than zero.'
     }
     if (item.price <= 0) {
-      errors[`items.${index}.price`] = 'Price must be greater than zero.'
+      errors[`items.${index}.price`] = 'Price Must be greater than zero.'
     }
   })
 

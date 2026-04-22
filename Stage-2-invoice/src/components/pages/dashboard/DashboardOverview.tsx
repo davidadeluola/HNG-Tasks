@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
 import { FilterStateInput } from "../../ui/Input";
 import { useInvoices } from "../../../hooks/useInvoices";
 import { formatCurrency, formatDisplayDate } from "../../../utils/formatters";
 import type { InvoiceStatus } from "../../../types/invoice";
 import { CreateInvoiceModal } from "./CreateInvoiceModal";
+import { ROUTES } from "../../../routes/paths";
 
 const STATUS_OPTIONS: { label: string; value: InvoiceStatus }[] = [
   { label: "Draft", value: "draft" },
@@ -24,6 +27,7 @@ function getStatusLabel(status: InvoiceStatus) {
 }
 
 export default function DashboardOverview() {
+  const navigate = useNavigate();
   const { invoices, filteredInvoices, activeFilters, setFilters, isLoading } =
     useInvoices();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -41,10 +45,14 @@ export default function DashboardOverview() {
           <h2 className="text-[clamp(2.25rem,3vw,3.5rem)] font-bold leading-none tracking-[-1px] text-(--ui-text)">
             Invoices
           </h2>
-          <p className="typo-body mt-2 font-medium text-[15px] text-(--ui-muted)">
+          <p className="typo-body mt-2 text-(--ui-muted)">
             {isLoading
               ? "Loading invoices..."
-              : `There are ${invoiceCountLabel}`}
+              : `There are ${invoiceCountLabel} total${
+                  activeFilters.size > 0
+                    ? ` (${activeFilters.size} filtered)`
+                    : ""
+                }.`}
           </p>
         </div>
 
@@ -96,17 +104,16 @@ export default function DashboardOverview() {
           {visibleInvoices.map((invoice) => (
             <article
               key={invoice.id}
-              className="grid gap-4 rounded-2xl border border-transparent bg-(--ui-surface) px-6 py-5 shadow-[0_12px_30px_rgba(72,84,159,0.08)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-(--color-primary-hover)/25 hover:shadow-[0_20px_40px_rgba(72,84,159,0.14)] md:grid-cols-[1.1fr_1fr_1fr_auto] lg:grid-cols-[0.8fr_1fr_1fr_1fr_auto]"
+              className="grid gap-4 rounded-sm bg-(--ui-surface) px-6 py-5  duration-200 ease-out hover:-translate-y-0.5 md:grid-cols-[0.85fr_1fr_1fr_1fr_0.9fr_auto] md:items-center"
             >
-              <div className="space-y-1">
-                <p className="typo-heading-s text-(--ui-text)">
-                  <span className="text-(--ui-muted)">#</span>
-                  {invoice.id}
-                </p>
-                <p className="typo-body text-(--ui-muted)">
-                  Due {formatDisplayDate(invoice.paymentDue)}
-                </p>
-              </div>
+              <p className="typo-heading-s text-(--ui-text)">
+                <span className="text-(--ui-muted)">#</span>
+                {invoice.id}
+              </p>
+
+              <p className="typo-body text-(--ui-muted)">
+                Due {formatDisplayDate(invoice.paymentDue)}
+              </p>
 
               <p className="typo-body text-(--ui-muted)">
                 {invoice.clientName}
@@ -117,13 +124,22 @@ export default function DashboardOverview() {
               </p>
 
               <p
-                className={`inline-flex min-w-26 items-center justify-center gap-2 rounded-md px-3 py-3 text-[15px] font-bold tracking-[-0.25px] ${
+                className={`inline-flex min-w-16 items-center justify-center gap-1.5 rounded-md px-2 py-4 text-[15px] font-bold tracking-[-0.2px] ${
                   STATUS_PILL_CLASSES[invoice.status]
                 }`}
               >
                 <span className="h-2 w-2 rounded-full bg-current" />
                 {getStatusLabel(invoice.status)}
               </p>
+
+              <button
+                type="button"
+                onClick={() => navigate(ROUTES.invoiceDetails(invoice.id))}
+                className="inline-flex h-8 w-8 items-center justify-center justify-self-end rounded-full text-(--color-primary) transition-colors duration-200 ease-out hover:bg-(--color-primary-hover)/10 hover:text-(--color-primary-hover)"
+                aria-label={`Open invoice ${invoice.id}`}
+              >
+                <ChevronRight size={16} strokeWidth={2.6} />
+              </button>
             </article>
           ))}
         </div>

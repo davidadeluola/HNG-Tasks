@@ -17,6 +17,7 @@ type TextInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
 	visualState?: FieldVisualState;
 	helperText?: string;
 	errorText?: string;
+	errorTextClassName?: string;
 	containerClassName?: string;
 };
 
@@ -111,6 +112,7 @@ export function TextInput({
 	visualState = "default",
 	helperText,
 	errorText,
+	errorTextClassName,
 	className,
 	containerClassName,
 	disabled,
@@ -133,7 +135,11 @@ export function TextInput({
 				)}
 				{...props}
 			/>
-			{errorText ? <p className="mt-1 typo-body-variant text-[#EC5757]">{errorText}</p> : null}
+			{errorText ? (
+				<p className={twMerge("mt-1 typo-body-variant text-[#EC5757]", errorTextClassName)}>
+					{errorText}
+				</p>
+			) : null}
 		</div>
 	);
 }
