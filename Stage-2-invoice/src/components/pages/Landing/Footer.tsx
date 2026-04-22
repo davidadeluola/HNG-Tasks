@@ -1,4 +1,4 @@
-import { Github, Twitter, Linkedin } from "lucide-react";
+import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 export function Footer() {
   return (
@@ -14,13 +14,13 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-4 pt-2">
               <a href="#" aria-label="Follow Tiny Invoice on Twitter" className="text-(--ui-muted) hover:text-(--color-primary) transition-colors">
-                <Twitter size={20} />
+                <FaTwitter size={20} />
               </a>
               <a href="#" aria-label="Visit Tiny Invoice on GitHub" className="text-(--ui-muted) hover:text-(--color-primary) transition-colors">
-                <Github size={20} />
+                <FaGithub size={20} />
               </a>
               <a href="#" aria-label="Connect with Tiny Invoice on LinkedIn" className="text-(--ui-muted) hover:text-(--color-primary) transition-colors">
-                <Linkedin size={20} />
+                <FaLinkedin size={20} />
               </a>
             </div>
           </div>

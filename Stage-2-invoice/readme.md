@@ -168,10 +168,7 @@ Known accessibility gap:
 
 ## Current Shortfalls to Address Before Final Grading
 
-1. Build errors currently exist in unrelated files and should be fixed before submission.
-2. Add modal focus trap to fully satisfy accessibility expectations.
-3. Enforce status guard so paid invoices cannot regress to another status during edit flow.
-4. Run final responsiveness and color-contrast QA on real devices and screen readers.
+1. Run final responsiveness and color-contrast QA on real devices and screen readers.
 
 ## Setup Instructions
 

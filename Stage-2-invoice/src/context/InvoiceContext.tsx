@@ -1,6 +1,6 @@
 import { createContext, useEffect, useMemo, useState } from 'react'
 import { invoiceApi } from '../api/invoiceApi'
-import type { FilterState, InvoiceContextValue, InvoiceInput } from '../types'
+import type { FilterState, Invoice, InvoiceContextValue } from '../types'
 
 export const InvoiceContext = createContext<InvoiceContextValue | undefined>(undefined)
 

@@ -1,4 +1,4 @@
-import { useEffect, useId } from "react";
+import { useEffect, useId, useRef } from "react";
 import type { ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
@@ -31,18 +31,70 @@ export default function Modal({
 }: ModalProps) {
   const titleId = useId();
   const descriptionId = useId();
+  const panelRef = useRef<HTMLElement>(null);
+  const previousActiveElementRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!isOpen) {
       return;
     }
 
+    previousActiveElementRef.current = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
+    const selector = [
+      "a[href]",
+      "button:not([disabled])",
+      "textarea:not([disabled])",
+      "input:not([disabled])",
+      "select:not([disabled])",
+      "[tabindex]:not([tabindex='-1'])",
+    ].join(",");
+
+    const panel = panelRef.current;
+    const focusables = panel ? Array.from(panel.querySelectorAll<HTMLElement>(selector)) : [];
+    const initialTarget = focusables[0] ?? panel;
+    initialTarget?.focus();
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         onClose();
+        return;
+      }
+
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      const currentPanel = panelRef.current;
+      if (!currentPanel) {
+        return;
+      }
+
+      const nodes = Array.from(currentPanel.querySelectorAll<HTMLElement>(selector));
+      if (nodes.length === 0) {
+        event.preventDefault();
+        currentPanel.focus();
+        return;
+      }
+
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+        return;
+      }
+
+      if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
       }
     }
 
@@ -51,6 +103,7 @@ export default function Modal({
     return () => {
       document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", handleKeyDown);
+      previousActiveElementRef.current?.focus();
     };
   }, [isOpen, onClose]);
 
@@ -86,6 +139,8 @@ export default function Modal({
         )}
       >
         <section
+          ref={panelRef}
+          tabIndex={-1}
           className={twMerge(
             "pointer-events-auto flex w-full flex-col overflow-hidden rounded-r-[18px] border border-(--ui-border) bg-(--ui-bg) shadow-[0_30px_80px_rgba(0,0,0,0.28)]",
             placement === "center" ? "max-w-3xl" : "h-full max-w-4xl",

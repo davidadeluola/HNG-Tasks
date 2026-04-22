@@ -81,10 +81,12 @@ export const invoiceApi = {
       return undefined
     }
 
+    const nextStatus: InvoiceStatus = target.status === 'paid' ? 'paid' : status
+
     const updated: Invoice = {
       ...target,
       ...input,
-      status,
+      status: nextStatus,
       paymentDue: addDays(input.createdAt, input.paymentTerms),
       items: input.items.map((item) => ({
         ...item,
