@@ -1,110 +1,209 @@
-# Stage 2 Invoice - Design System
+# Frontend Wizards Stage 2 - Invoice Management App
 
-This document defines the visual design system for the Stage 2 Invoice project.
-It is based on the approved UI references for colors, typography, buttons, and form elements.
+A responsive React + TypeScript invoice management application focused on real invoice workflows:
+- Create, view, update, and delete invoices
+- Save invoices as draft
+- Mark invoices as paid
+- Filter invoices by status
+- Toggle light and dark themes
+- Persist data with LocalStorage + IndexedDB (hybrid adapter)
 
-## Brand Direction
+This submission also includes a marketing landing page as an enhancement beyond the core dashboard requirements.
 
-- Style: clean, modern, product-focused interface
-- Tone: professional and confident
-- Primary accent: violet
-- Dual theme support: light and dark
+## Stage Narrative (Presentation Voice)
 
-## Color Tokens
+This build delivers a production-style invoice workflow in React, centered around clean UI, modular structure, and durable client-side persistence. The app supports end-to-end invoice management from creation to payment, while preserving theme and data state across sessions. It is designed to be easy to maintain and straightforward to extend toward a backend-powered architecture.
 
-### Primary
+## Tech Stack
 
-- `--color-primary-500`: `#7C5DFA` (RGB `124, 93, 250`; HSL `252, 94%, 67%`)
-- `--color-primary-400`: `#9277FF` (RGB `146, 119, 255`; HSL `252, 100%, 73%`)
+- React 19 + TypeScript + Vite
+- React Router
+- Tailwind CSS v4 utilities + design tokens
+- Context API for invoice and theme state
+- IndexedDB (`idb`) + LocalStorage hybrid persistence
 
-### Neutral (Light + UI Surfaces)
+## Architecture Overview
 
-- `--color-navy-900`: `#1E2139` (RGB `30, 33, 57`; HSL `233, 31%, 17%`)
-- `--color-navy-800`: `#252945` (RGB `37, 41, 69`; HSL `233, 30%, 21%`)
-- `--color-bluegray-300`: `#7E88C3` (RGB `126, 136, 195`; HSL `231, 37%, 63%`)
-- `--color-bluegray-200`: `#888EB0` (RGB `136, 142, 176`; HSL `231, 20%, 61%`)
-- `--color-bluegray-100`: `#DFE3FA` (RGB `223, 227, 250`; HSL `231, 73%, 93%`)
-- `--color-bg-light`: `#F8F8FB` (RGB `248, 248, 251`; HSL `240, 27%, 98%`)
+The app is structured in a modular, feature-oriented layout:
 
-### Neutral (Dark Theme)
-
-- `--color-bg-dark`: `#141625` (RGB `20, 22, 37`; HSL `233, 30%, 11%`)
-- `--color-bg-dark-deep`: `#0C0E16` (RGB `12, 14, 22`; HSL `228, 29%, 7%`)
-
-### Semantic (Danger)
-
-- `--color-danger-500`: `#EC5757` (RGB `236, 87, 87`; HSL `0, 80%, 63%`)
-- `--color-danger-300`: `#FF9797` (RGB `255, 151, 151`; HSL `0, 100%, 80%`)
-
-## Typography
-
-- Font family: `League Spartan`
-
-### Type Scale
-
-- Heading L: `36px / 33px`, weight `700`, letter spacing `-1px`
-- Heading M: `24px / 22px`, weight `700`, letter spacing `-0.75px`
-- Heading S: `15px / 24px`, weight `700`, letter spacing `-0.25px`
-- Heading S Variant: `15px / 15px`, weight `700`, letter spacing `-0.25px`
-- Body: `13px / 18px`, weight `500`, letter spacing `-0.1px`
-- Body Variant: `13px / 15px`, weight `500`, letter spacing `-0.25px`
-
-## Buttons
-
-The system uses rounded pill buttons with clear state handling.
-
-- Primary CTA: New Invoice (icon + label), default and hover
-- Primary Action: Mark as Paid, default and hover
-- Secondary Action: Edit
-  - Light theme: light background + muted text
-  - Dark theme: dark background + light text
-- Tertiary Action: Save as Draft
-  - Light theme: dark text on medium-dark surface
-  - Dark theme: light text on deep-dark surface
-- Destructive Action: Delete, default and hover
-- Utility Action: + Add New Item, default and hover
-
-## Form Elements
-
-Available in both light and dark themes:
-
-- Text Field states: default, filled, active
-- Dropdown states: default, hover, active, expanded list
-- Date Picker states: default, disabled, active, calendar open
-
-Behavior notes:
-
-- Active fields use the primary violet border
-- Hover states use subtle contrast increase
-- Menus and date popovers use elevated surfaces with soft shadow
-
-## Suggested CSS Tokens
-
-```css
-:root {
-  --color-primary-500: #7c5dfa;
-  --color-primary-400: #9277ff;
-
-  --color-navy-900: #1e2139;
-  --color-navy-800: #252945;
-  --color-bluegray-300: #7e88c3;
-  --color-bluegray-200: #888eb0;
-  --color-bluegray-100: #dfe3fa;
-  --color-bg-light: #f8f8fb;
-
-  --color-bg-dark: #141625;
-  --color-bg-dark-deep: #0c0e16;
-
-  --color-danger-500: #ec5757;
-  --color-danger-300: #ff9797;
-
-  --font-family-base: "League Spartan", sans-serif;
-}
+```txt
+src/
+  api/
+    invoiceApi.ts
+    indexedDbAdapter.ts
+    storageAdapter.ts
+  components/
+    pages/
+      Landing/
+      dashboard/
+    shared/
+    ui/
+  context/
+    InvoiceContext.tsx
+    ThemeContext.tsx
+  hooks/
+    useInvoiceForm.ts
+    useInvoices.ts
+    useTheme.ts
+  layouts/
+    app/AppLayout.tsx
+  pages/
+    LandingPage.tsx
+    DashboardPage.tsx
+    InvoiceDetailsPage.tsx
+  routes/
+    AppRoutes.tsx
+  types/
+  utils/
+    constants.ts
+    validators.ts
+    formatters.ts
 ```
 
-## Implementation Notes
+## Data Flow
 
-- Keep spacing and radii consistent across both themes.
-- Ensure WCAG-friendly contrast on dark surfaces.
-- Reuse token variables instead of hardcoding color values in components.
-- Keep hover/active transitions subtle and fast (`120ms` to `180ms`).
+1. UI components dispatch actions through `useInvoices` and `InvoiceContext`.
+2. Context calls `invoiceApi` methods (`getAll`, `create`, `update`, `remove`, `markAsPaid`).
+3. `invoiceApi` uses `hybridStorageAdapter` for persistence.
+4. `hybridStorageAdapter` syncs across LocalStorage and IndexedDB.
+5. UI reacts to updated context state and re-renders list/details views.
+
+## Requirement Coverage (Audit)
+
+### 1) CRUD
+
+- Create invoice: Implemented via `CreateInvoiceModal`.
+- Read list and details: Implemented on dashboard and invoice details page.
+- Update invoice: Implemented via edit mode in modal.
+- Delete invoice: Implemented with confirmation modal.
+
+Status: Mostly complete.
+
+### 2) Form Validation
+
+Implemented validations include:
+- Client name required
+- Client email required + format check
+- Description required
+- Invoice date required
+- At least one item
+- Item name required
+- Quantity > 0
+- Price > 0
+
+Status: Complete for declared required fields.
+
+### 3) Draft and Payment Flow
+
+Implemented:
+- Save as draft
+- Save as pending
+- Mark pending as paid
+- Status badges in list and details
+
+Important gap:
+- A paid invoice can currently be edited and saved as pending (regression from paid).
+
+Status: Partially complete (1 logic rule gap).
+
+### 4) Filter by Status
+
+- Checkbox-style status filter implemented (`draft`, `pending`, `paid`)
+- Immediate list update
+- Empty state when filtered result is empty
+
+Status: Complete.
+
+### 5) Light/Dark Mode
+
+- Global theme toggle implemented
+- Theme persisted in LocalStorage
+- Design tokens adapt surfaces/text/borders for both themes
+
+Status: Complete.
+
+### 6) Responsive Design
+
+- Mobile, tablet, desktop responsive layouts are implemented across landing, dashboard, and modals
+- Invoice list and forms adapt to smaller screens
+
+Status: Complete based on implementation intent.
+
+### 7) Hover and Interactive States
+
+- Hover states present on buttons, links, filters, and many controls
+
+Status: Complete.
+
+## Accessibility Notes
+
+Implemented:
+- Semantic sections used in major page blocks
+- Buttons use `<button>` elements
+- Form inputs are associated with labels
+- Modal closes on Escape key
+- Interactive controls include descriptive `aria-label` values
+
+Known accessibility gap:
+- Modal does not currently implement full focus trapping.
+
+## Trade-offs
+
+- Frontend-only persistence instead of backend API:
+  - Pros: faster delivery, offline-friendly, low setup complexity
+  - Cons: no multi-device sync, no shared/team data, browser-storage limits
+- Context-based state management:
+  - Pros: simple and maintainable for current app size
+  - Cons: could become heavy with larger feature growth compared to dedicated state libraries
+- Hybrid IndexedDB + LocalStorage strategy:
+  - Pros: resilient fallback and persistence redundancy
+  - Cons: requires sync logic and conflict assumptions
+
+## Improvements Beyond Requirements
+
+- Added a dedicated landing page experience before dashboard flow
+- Implemented hybrid storage strategy using both IndexedDB and LocalStorage
+- Built reusable UI primitives (`Modal`, `Input`, `Button`, `Form`)
+- Added custom date picker and status filter components for richer UX
+
+## Current Shortfalls to Address Before Final Grading
+
+1. Build errors currently exist in unrelated files and should be fixed before submission.
+2. Add modal focus trap to fully satisfy accessibility expectations.
+3. Enforce status guard so paid invoices cannot regress to another status during edit flow.
+4. Run final responsiveness and color-contrast QA on real devices and screen readers.
+
+## Setup Instructions
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Start development server:
+
+```bash
+npm run dev
+```
+
+3. Build for production:
+
+```bash
+npm run build
+```
+
+4. Preview production build:
+
+```bash
+npm run preview
+```
+
+## Suggested Submission Checklist
+
+- Live URL (Vercel/Netlify)
+- GitHub repository URL
+- README (this file)
+- Architecture summary
+- Trade-offs and accessibility notes
+- Explicit list of known gaps and next steps

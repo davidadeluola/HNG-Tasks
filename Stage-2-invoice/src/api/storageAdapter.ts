@@ -1,11 +1,6 @@
 import { STORAGE_KEYS } from '../utils/constants'
-import type { Invoice } from '../types/invoice'
+import type { Invoice, StorageAdapter } from '../types'
 import { indexedDbAdapter } from './indexedDbAdapter'
-
-interface StorageAdapter {
-  readInvoices: () => Promise<Invoice[]>
-  writeInvoices: (invoices: Invoice[]) => Promise<void>
-}
 
 function safeParse(value: string | null): Invoice[] {
   if (!value) {

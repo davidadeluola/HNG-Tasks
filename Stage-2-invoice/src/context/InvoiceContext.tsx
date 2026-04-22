@@ -1,21 +1,6 @@
 import { createContext, useEffect, useMemo, useState } from 'react'
 import { invoiceApi } from '../api/invoiceApi'
-import type { Invoice, InvoiceInput, InvoiceStatus } from '../types/invoice'
-
-type FilterState = Set<InvoiceStatus>
-
-interface InvoiceContextValue {
-  isLoading: boolean
-  invoices: Invoice[]
-  filteredInvoices: Invoice[]
-  activeFilters: FilterState
-  setFilters: (nextFilters: FilterState) => void
-  getById: (id: string) => Invoice | undefined
-  createInvoice: (input: InvoiceInput, status: InvoiceStatus) => Promise<Invoice>
-  updateInvoice: (id: string, input: InvoiceInput, status: InvoiceStatus) => Promise<Invoice | undefined>
-  deleteInvoice: (id: string) => Promise<void>
-  markInvoiceAsPaid: (id: string) => Promise<void>
-}
+import type { FilterState, InvoiceContextValue, InvoiceInput } from '../types'
 
 export const InvoiceContext = createContext<InvoiceContextValue | undefined>(undefined)
 

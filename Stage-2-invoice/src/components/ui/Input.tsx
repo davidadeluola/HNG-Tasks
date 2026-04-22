@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes } from "react";
 import { CalendarDays, ChevronDown } from "lucide-react";
 import { twMerge } from "tailwind-merge";
@@ -120,7 +120,8 @@ export function TextInput({
 	disabled,
 	...props
 }: TextInputProps) {
-	const inputId = id ?? `text-input-${label.toLowerCase().replace(/\s+/g, "-")}`;
+	const generatedId = useId();
+	const inputId = id ?? `text-input-${generatedId}`;
 	const isDisabled = disabled || visualState === "disabled";
 	const hasError = Boolean(errorText);
 
@@ -130,6 +131,7 @@ export function TextInput({
 			<input
 				id={inputId}
 				disabled={isDisabled}
+				aria-label={props["aria-label"] ?? label}
 				className={twMerge(
 					"form-control typo-body h-12 w-full rounded-sm border border-[#DFE3FA] bg-(--ui-surface) px-4 font-bold text-dark outline-none focus-visible:outline-none transition-colors duration-300 ease-out dark:text-white",
 					fieldStateClass(visualState, hasError),
@@ -158,7 +160,8 @@ export function SelectInput({
 	disabled,
 	...props
 }: SelectInputProps) {
-	const inputId = id ?? `select-input-${label.toLowerCase().replace(/\s+/g, "-")}`;
+	const generatedId = useId();
+	const inputId = id ?? `select-input-${generatedId}`;
 	const isDisabled = disabled || visualState === "disabled";
 	const hasError = Boolean(errorText);
 	const isControlled = props.value !== undefined;
@@ -201,6 +204,7 @@ export function SelectInput({
 					disabled={isDisabled}
 					aria-haspopup="listbox"
 					aria-expanded={isOpen}
+					aria-label={props["aria-label"] ?? `${label}: ${selectedOption?.label ?? "No option selected"}`}
 					onClick={() => setIsOpen((value) => !value)}
 					className={twMerge(
 						"form-control typo-body flex h-12 w-full items-center justify-between rounded-sm border border-[#DFE3FA] bg-(--ui-surface) px-4 text-left outline-none focus-visible:outline-none transition-colors duration-300 ease-out",
@@ -255,7 +259,8 @@ export function DateInput({
 	disabled,
 	...props
 }: DateInputProps) {
-	const inputId = id ?? `date-input-${label.toLowerCase().replace(/\s+/g, "-")}`;
+	const generatedId = useId();
+	const inputId = id ?? `date-input-${generatedId}`;
 	const isDisabled = disabled || visualState === "disabled";
 	const hasError = Boolean(errorText);
 
@@ -311,6 +316,7 @@ export function DateInput({
 					type="button"
 					id={inputId}
 					disabled={isDisabled}
+					aria-label={props["aria-label"] ?? `${label}: ${dateValue ? dayjs(dateValue).format("DD MMM YYYY") : "Select date"}`}
 					onClick={() => setIsOpen(!isOpen)}
 					className={twMerge(
 						"form-control typo-body h-12 w-full rounded-sm border border-[#DFE3FA] bg-(--ui-surface) px-4 flex items-center justify-between outline-none focus-visible:outline-none transition-colors duration-300 ease-out",
@@ -414,6 +420,7 @@ export function FilterStateInput({
 				type="button"
 				aria-haspopup="menu"
 				aria-expanded={isOpen}
+				aria-label={label}
 				onClick={() => setIsOpen((previous) => !previous)}
 				className={twMerge(
 					"inline-flex items-center gap-3 text-[15px] font-bold tracking-[-0.25px] text-(--ui-text) outline-none transition-colors duration-200 ease-out hover:text-(--color-primary) focus-visible:text-(--color-primary)",
@@ -445,6 +452,7 @@ export function FilterStateInput({
 								<input
 									type="checkbox"
 									checked={allSelected}
+									aria-label={`${label}: Select all`}
 									ref={(input) => {
 										if (input) {
 											input.indeterminate = someSelected;
@@ -466,6 +474,7 @@ export function FilterStateInput({
 										<input
 											type="checkbox"
 											checked={isChecked}
+											aria-label={`${label}: ${option.label}`}
 											onChange={() => toggleOption(option.value)}
 											className="h-4 w-4 rounded-sm border-(--ui-border) accent-[#7C5DFA]"
 										/>

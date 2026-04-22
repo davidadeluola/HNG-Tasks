@@ -1,12 +1,6 @@
 import { createContext, useEffect, useMemo, useState } from 'react'
 import { STORAGE_KEYS } from '../utils/constants'
-
-type ThemeMode = 'light' | 'dark'
-
-interface ThemeContextValue {
-  theme: ThemeMode
-  toggleTheme: () => void
-}
+import type { ThemeContextValue, ThemeMode } from '../types'
 
 export const ThemeContext = createContext<ThemeContextValue | undefined>(undefined)
 

@@ -1,8 +1,4 @@
-import type { InvoiceInput } from '../types/invoice'
-
-export interface ValidationErrors {
-  [field: string]: string
-}
+import type { InvoiceInput, ValidationErrors } from '../types'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 

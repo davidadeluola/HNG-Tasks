@@ -1,15 +1,12 @@
-import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import Button from "../../ui/Button";
 import { DateInput, SelectInput, TextInput } from "../../ui/Input";
 import Modal from "../../ui/Modal";
 import { useInvoices } from "../../../hooks/useInvoices";
+import { useInvoiceForm } from "../../../hooks/useInvoiceForm";
 import { PAYMENT_TERMS_OPTIONS } from "../../../utils/constants";
-import {
-  validateInvoiceInput,
-  type ValidationErrors,
-} from "../../../utils/validators";
-import type { Invoice, InvoiceInput, InvoiceStatus } from "../../../types/invoice";
+import { validateInvoiceInput } from "../../../utils/validators";
+import type { Invoice, InvoiceStatus } from "../../../types";
 
 type CreateInvoiceModalProps = {
   isOpen: boolean;
@@ -17,56 +14,7 @@ type CreateInvoiceModalProps = {
   invoice?: Invoice | null;
 };
 
-type ItemState = InvoiceInput["items"][number];
 const MODAL_ERROR_TEXT_CLASS = "mt-1 text-[11px] leading-4 tracking-[-0.05px]";
-
-function buildInvoiceInput(source?: Invoice | null): InvoiceInput {
-  if (!source) {
-    return {
-      createdAt: new Date().toISOString().slice(0, 10),
-      paymentTerms: 7,
-      description: "",
-      clientName: "",
-      clientEmail: "",
-      senderAddress: {
-        street: "19 Union Terrace",
-        city: "London",
-        postCode: "E1 3EZ",
-        country: "United Kingdom",
-      },
-      clientAddress: {
-        street: "",
-        city: "",
-        postCode: "",
-        country: "",
-      },
-      items: [
-        {
-          id: "item-1",
-          name: "",
-          quantity: 1,
-          price: 0,
-          total: 0,
-        },
-      ],
-    };
-  }
-
-  return {
-    createdAt: source.createdAt,
-    paymentTerms: source.paymentTerms,
-    description: source.description,
-    clientName: source.clientName,
-    clientEmail: source.clientEmail,
-    senderAddress: { ...source.senderAddress },
-    clientAddress: { ...source.clientAddress },
-    items: source.items.map((item) => ({ ...item })),
-  };
-}
-
-function getFieldError(errors: ValidationErrors, field: string) {
-  return errors[field];
-}
 
 export function CreateInvoiceModal({
   isOpen,
@@ -74,93 +22,31 @@ export function CreateInvoiceModal({
   invoice,
 }: CreateInvoiceModalProps) {
   const { createInvoice, updateInvoice } = useInvoices();
-  const isEditing = Boolean(invoice);
-  const [formInvoice, setFormInvoice] = useState<InvoiceInput>(() =>
-    buildInvoiceInput(invoice),
-  );
-  const [errors, setErrors] = useState<ValidationErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState<InvoiceStatus | null>(null);
-
-  function resetForm() {
-    setFormInvoice(buildInvoiceInput(null));
-    setErrors({});
-    setIsSubmitting(null);
-  }
+  const {
+    formInvoice,
+    errors,
+    setErrors,
+    isSubmitting,
+    setIsSubmitting,
+    resetForm,
+    updateField,
+    updateAddress,
+    updateItem,
+    addItem,
+    removeItem,
+    isEditing,
+  } = useInvoiceForm(invoice);
 
   function handleClose() {
     resetForm();
     onClose();
   }
 
-  function updateField<K extends keyof InvoiceInput>(
-    field: K,
-    value: InvoiceInput[K]
-  ) {
-    setFormInvoice((current) => ({ ...current, [field]: value }));
-  }
-
-  function updateAddress(
-    section: "senderAddress" | "clientAddress",
-    field: string,
-    value: string
-  ) {
-    setFormInvoice((current) => ({
-      ...current,
-      [section]: {
-        ...current[section],
-        [field]: value,
-      },
-    }));
-  }
-
-  function updateItem(
-    index: number,
-    field: keyof ItemState,
-    value: string | number
-  ) {
-    setFormInvoice((current) => ({
-      ...current,
-      items: current.items.map((item, itemIndex) =>
-        itemIndex === index
-          ? {
-              ...item,
-              [field]: value,
-              total:
-                field === "quantity" || field === "price"
-                  ? Number(field === "quantity" ? value : item.quantity) *
-                    Number(field === "price" ? value : item.price)
-                  : item.total,
-            }
-          : item
-      ),
-    }));
-  }
-
-  function addItem() {
-    setFormInvoice((current) => ({
-      ...current,
-      items: [
-        ...current.items,
-        {
-          id: `item-${current.items.length + 1}`,
-          name: "",
-          quantity: 1,
-          price: 0,
-          total: 0,
-        },
-      ],
-    }));
-  }
-
-  function removeItem(index: number) {
-    setFormInvoice((current) => ({
-      ...current,
-      items:
-        current.items.length === 1
-          ? current.items
-          : current.items.filter((_, itemIndex) => itemIndex !== index),
-    }));
-  }
+  const clientNameError = errors.clientName;
+  const clientEmailError = errors.clientEmail;
+  const createdAtError = errors.createdAt;
+  const descriptionError = errors.description;
+  const itemsError = errors.items;
 
   async function handleSubmit(status: InvoiceStatus) {
     const nextErrors = validateInvoiceInput(formInvoice);
@@ -238,7 +124,7 @@ export function CreateInvoiceModal({
             label="Client's Name"
             value={formInvoice.clientName}
             onChange={(event) => updateField("clientName", event.target.value)}
-            errorText={getFieldError(errors, "clientName")}
+            errorText={clientNameError}
             errorTextClassName={MODAL_ERROR_TEXT_CLASS}
           />
           <TextInput
@@ -246,7 +132,7 @@ export function CreateInvoiceModal({
             type="email"
             value={formInvoice.clientEmail}
             onChange={(event) => updateField("clientEmail", event.target.value)}
-            errorText={getFieldError(errors, "clientEmail")}
+            errorText={clientEmailError}
             errorTextClassName={MODAL_ERROR_TEXT_CLASS}
           />
           <TextInput
@@ -286,7 +172,7 @@ export function CreateInvoiceModal({
               label="Invoice Date"
               value={formInvoice.createdAt}
               onChange={(event) => updateField("createdAt", event.target.value)}
-              errorText={getFieldError(errors, "createdAt")}
+              errorText={createdAtError}
             />
             <SelectInput
               label="Payment Terms"
@@ -305,7 +191,7 @@ export function CreateInvoiceModal({
             label="Project Description"
             value={formInvoice.description}
             onChange={(event) => updateField("description", event.target.value)}
-            errorText={getFieldError(errors, "description")}
+            errorText={descriptionError}
             errorTextClassName={MODAL_ERROR_TEXT_CLASS}
           />
         </section>
@@ -314,9 +200,9 @@ export function CreateInvoiceModal({
           <h2 className="text-xl font-bold tracking-[-0.4px] text-(--ui-muted)">
             Item List
           </h2>
-          {getFieldError(errors, "items") ? (
+          {itemsError ? (
             <p className="typo-body-variant text-(--color-danger)">
-              {getFieldError(errors, "items")}
+              {itemsError}
             </p>
           ) : null}
 
@@ -343,7 +229,7 @@ export function CreateInvoiceModal({
                     onChange={(event) =>
                       updateItem(index, "name", event.target.value)
                     }
-                    errorText={getFieldError(errors, `items.${index}.name`)}
+                    errorText={errors[`items.${index}.name`]}
                     errorTextClassName={MODAL_ERROR_TEXT_CLASS}
                     containerClassName="sm:[&>div]:hidden"
                   />
@@ -355,7 +241,7 @@ export function CreateInvoiceModal({
                     onChange={(event) =>
                       updateItem(index, "quantity", Number(event.target.value))
                     }
-                    errorText={getFieldError(errors, `items.${index}.quantity`)}
+                    errorText={errors[`items.${index}.quantity`]}
                     errorTextClassName={MODAL_ERROR_TEXT_CLASS}
                     containerClassName="sm:[&>div]:hidden"
                   />
@@ -367,7 +253,7 @@ export function CreateInvoiceModal({
                     onChange={(event) =>
                       updateItem(index, "price", Number(event.target.value))
                     }
-                    errorText={getFieldError(errors, `items.${index}.price`)}
+                    errorText={errors[`items.${index}.price`]}
                     errorTextClassName={MODAL_ERROR_TEXT_CLASS}
                     containerClassName="sm:[&>div]:hidden"
                   />

@@ -82,7 +82,7 @@ export default function DashboardOverview() {
         <div className="m-auto flex min-h-220 items-center justify-center rounded-3xl">
           <div className="flex max-w-65 flex-col items-center text-center">
             <img
-              src="/Email-campaign_Flatline%202.svg"
+              src="/Email-campaign_Flatline-2.svg"
               alt="No invoices illustration"
               className="h-64 w-64"
             />

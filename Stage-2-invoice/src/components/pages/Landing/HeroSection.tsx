@@ -1,80 +1,61 @@
-import {
-  ArrowRight,
-  CheckCircle2,
-  MoonStar,
-  Sparkles,
-  WalletCards,
-} from "lucide-react";
+import { Link } from "react-router-dom";
+import {CheckCircle2 } from "lucide-react";
 import Button from "../../ui/Button";
-
-const features = [
-  {
-    title: "Context-driven theme",
-    description:
-      "Switch between light and dark mode with one global state, no Redux overhead.",
-    icon: MoonStar,
-  },
-  {
-    title: "Reusable UI system",
-    description:
-      "Buttons, inputs, and form shells are built as shared components for consistency.",
-    icon: Sparkles,
-  },
-  {
-    title: "Invoice-first workflow",
-    description:
-      "Designed for clean invoicing flows, fast navigation, and a clear data model.",
-    icon: WalletCards,
-  },
-];
+import { ROUTES } from "../../../routes/paths";
 
 const highlights = [
-  "Create invoices",
-  "Save drafts",
-  "Mark as paid",
-  "Responsive from mobile to desktop",
+  "Create professional invoices",
+  "Track Paid & Pending status",
+  "Save reusable drafts",
+  "Beautiful Dark & Light modes",
 ];
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(124,93,250,0.18),transparent_32%),radial-gradient(circle_at_top_right,rgba(146,119,255,0.14),transparent_26%),linear-gradient(180deg,var(--ui-surface),var(--ui-bg))]" />
+    <section className="relative overflow-hidden bg-(--ui-bg)">
+      {/* Non-generic Brutalist Grid Background */}
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--ui-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--ui-border)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:linear-gradient(to_bottom,white_40%,transparent_100%)] opacity-40" />
+      
       <div className="mx-auto grid w-full max-w-screen-2xl gap-16 px-6 py-20 md:px-10 lg:grid-cols-[1.12fr_0.88fr] lg:gap-20 lg:px-16 lg:py-28 xl:px-24">
         <div className="flex flex-col justify-center gap-8">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-(--ui-border) bg-(--ui-surface) px-4 py-2 text-sm font-semibold text-(--ui-muted) shadow-[0_8px_24px_rgba(72,84,159,0.08)]">
-            <CheckCircle2 size={16} className="text-(--color-primary)" />
-            Context-powered theme, reusable components, lean structure
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border-2 border-(--color-primary) bg-(--ui-surface) px-4 py-2 text-sm font-bold text-(--color-primary) shadow-[4px_4px_0_var(--color-primary)]">
+            <CheckCircle2 size={16} />
+            The simplest way to get paid.
           </div>
 
           <div className="space-y-5">
             <p className="typo-heading-s uppercase tracking-[0.22em] text-(--color-primary)">
               Tiny Invoice
             </p>
-            <h1 className="typo-heading-l max-w-2xl text-(--ui-text) md:text-[60px] md:leading-[1.04]">
-              Build and manage invoices with a clean, fast, and modern interface.
+            <h1 className="typo-heading-l max-w-2xl text-(--ui-text) md:text-[64px] md:leading-[2.05] font-black tracking-tight">
+              Manage your invoices without the headache.
             </h1>
-            <p className="typo-body max-w-3xl text-(--ui-muted)">
-              A lightweight invoice system built with React, TypeScript, and context for global
-              theme control. The experience follows your design system with reusable inputs,
-              forms, and shared components.
+            <p className="typo-body max-w-3xl text-(--ui-muted) text-lg">
+              Tiny Invoice is a lightweight, blazing-fast application designed for freelancers and small teams. Create beautiful invoices, track your pending payments, and keep your business organized—all in one place.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4">
-              <Button variant="ghost">Get Started</Button>
-            <Button
-              variant="ghost"
-                className="border-(--ui-border) bg-(--ui-surface) text-(--ui-text)"
-            >
-              View Features
-            </Button>
+          <div className="flex flex-wrap items-center gap-4 mt-2">
+            <Link to={ROUTES.accounts}>
+              <Button className="px-8 py-6 text-base shadow-[4px_4px_0_var(--color-surface-dark)] dark:shadow-[4px_4px_0_var(--color-primary-hover)] hover:-translate-y-1 transition-transform">
+                Create an Invoice
+              </Button>
+            </Link>
+            <Link to={ROUTES.accounts}>
+              <Button
+                variant="ghost"
+                className="border-2 border-(--ui-border) bg-(--ui-surface) text-(--ui-text) px-8 py-6 text-base shadow-[4px_4px_0_var(--ui-border)] hover:-translate-y-1 transition-transform"
+              >
+                Go to Dashboard
+              </Button>
+            </Link>
           </div>
 
-          <ul className="flex flex-wrap gap-3 text-sm text-(--ui-muted)">
+          <ul className="flex flex-wrap gap-3 text-sm font-bold text-(--ui-text) mt-6">
             {highlights.map((item) => (
               <li
                 key={item}
-                className="rounded-full border border-(--ui-border) bg-(--ui-surface) px-4 py-2"
+                className="rounded-lg border-2 border-(--ui-border) bg-(--ui-surface) px-4 py-2"
               >
                 {item}
               </li>
@@ -82,39 +63,38 @@ export function HeroSection() {
           </ul>
         </div>
 
-        <div className="relative">
-          <div className="absolute -left-8 top-8 h-24 w-24 rounded-full bg-[rgba(124,93,250,0.16)] blur-3xl" />
-          <div className="absolute right-6 top-2 h-28 w-28 rounded-full bg-[rgba(146,119,255,0.14)] blur-3xl" />
-          <div className="relative rounded-[28px] border border-(--ui-border) bg-(--ui-surface) p-6 shadow-[0_24px_60px_rgba(72,84,159,0.18)]">
-            <div className="mb-6 flex items-center justify-between">
+        <div className="relative hidden lg:block">
+          <div className="relative rounded-3xl border-4 border-(--ui-border) bg-(--ui-surface) p-8 shadow-[12px_12px_0_var(--color-primary)] transition-transform hover:-translate-y-2 hover:-translate-x-2 duration-300">
+            <div className="mb-8 flex items-center justify-between border-b-2 border-(--ui-border) pb-4">
               <div>
-                <p className="typo-heading-s text-(--ui-text)">Dashboard Preview</p>
-                <p className="typo-body-variant text-(--ui-muted)">
-                  Simple, focused, ready for invoices
+                <p className="typo-heading-s text-(--ui-text)">Invoice #RT3080</p>
+                <p className="typo-body-variant text-(--ui-muted) mt-1">
+                  Due 23 April 2026
                 </p>
               </div>
-              <div className="rounded-2xl bg-(--color-primary) p-3 text-white">
-                <ArrowRight size={20} />
+              <div className="rounded-xl border-2 border-(--color-primary) bg-[rgba(124,93,250,0.1)] px-4 py-2 font-bold text-(--color-primary)">
+                Pending
               </div>
             </div>
 
-            <div className="grid gap-4">
-              {features.map((feature) => {
-                const Icon = feature.icon;
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <span className="typo-body font-bold text-(--ui-text)">Alex Grim</span>
+                <span className="typo-heading-s text-(--ui-text)">£ 556.00</span>
+              </div>
 
-                return (
-                  <article
-                    key={feature.title}
-                    className="rounded-2xl border border-(--ui-border) bg-[linear-gradient(180deg,rgba(248,248,251,0.9),rgba(255,255,255,0.96))] p-4 dark:bg-[linear-gradient(180deg,rgba(30,33,57,0.9),rgba(37,41,69,0.96))]"
-                  >
-                    <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[rgba(124,93,250,0.12)] text-(--color-primary)">
-                      <Icon size={18} />
-                    </div>
-                    <h2 className="typo-heading-s mb-1 text-(--ui-text)">{feature.title}</h2>
-                    <p className="typo-body text-(--ui-muted)">{feature.description}</p>
-                  </article>
-                );
-              })}
+               <div className="flex justify-between items-center">
+                <span className="typo-body font-bold text-(--ui-text)">David Adeluola</span>
+                <span className="typo-heading-s text-(--ui-text)">£ 5356.00</span>
+              </div>
+              
+              <div className="h-2 w-full bg-(--ui-border) rounded-full overflow-hidden">
+                <div className="h-full bg-(--color-primary) w-2/3"></div>
+              </div>
+              
+              <p className="typo-body text-(--ui-muted) text-center italic mt-4">
+                "Creating professional invoices has never been this easy."
+              </p>
             </div>
           </div>
         </div>
@@ -122,3 +102,4 @@ export function HeroSection() {
     </section>
   );
 }
+

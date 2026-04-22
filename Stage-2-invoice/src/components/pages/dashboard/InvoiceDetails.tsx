@@ -85,7 +85,7 @@ export default function InvoiceDetails() {
   }
 
   return (
-    <section className="min-h-[55rem] grid gap-6">
+    <section className="min-h-220 grid gap-6">
       <Link
         to={ROUTES.accounts}
         className="inline-flex items-center gap-3 text-[15px] font-bold tracking-[-0.25px] text-(--ui-text)"
