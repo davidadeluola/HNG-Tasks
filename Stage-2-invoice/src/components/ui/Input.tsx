@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes } from "react";
 import { CalendarDays, ChevronDown } from "lucide-react";
 import { twMerge } from "tailwind-merge";
+import { DayPicker } from "react-day-picker";
+import dayjs from "dayjs";
 
 type FieldVisualState = "default" | "filled" | "active" | "disabled" | "error";
 
@@ -256,57 +258,104 @@ export function DateInput({
 	const inputId = id ?? `date-input-${label.toLowerCase().replace(/\s+/g, "-")}`;
 	const isDisabled = disabled || visualState === "disabled";
 	const hasError = Boolean(errorText);
-	const inputRef = useRef<HTMLInputElement>(null);
 
-	const todayIso = new Date().toISOString().slice(0, 10);
-	const hasControlledValue = Object.prototype.hasOwnProperty.call(props, "value");
-	const hasDefaultValue = Object.prototype.hasOwnProperty.call(props, "defaultValue");
+	const [isOpen, setIsOpen] = useState(false);
+	const containerRef = useRef<HTMLDivElement>(null);
 
-	function openDatePicker() {
-		if (!inputRef.current || isDisabled) {
-			return;
+	const isControlled = props.value !== undefined;
+	const [uncontrolledValue, setUncontrolledValue] = useState<string>(
+		(props.defaultValue as string) ?? new Date().toISOString().slice(0, 10)
+	);
+
+	const dateValue = isControlled ? (props.value as string) : uncontrolledValue;
+	const selectedDate = dateValue ? dayjs(dateValue).toDate() : undefined;
+
+	useEffect(() => {
+		function handlePointerDown(event: MouseEvent) {
+			if (!containerRef.current?.contains(event.target as Node)) {
+				setIsOpen(false);
+			}
 		}
 
-		const pickerTarget = inputRef.current as HTMLInputElement & { showPicker?: () => void };
+		document.addEventListener("mousedown", handlePointerDown);
+		return () => document.removeEventListener("mousedown", handlePointerDown);
+	}, []);
 
-		if (typeof pickerTarget.showPicker === "function") {
-			pickerTarget.showPicker();
-			return;
+	function handleSelect(date: Date | undefined) {
+		if (date) {
+			const formattedDate = dayjs(date).format("YYYY-MM-DD");
+			if (!isControlled) {
+				setUncontrolledValue(formattedDate);
+			}
+			setIsOpen(false);
+			props.onChange?.({
+				target: { value: formattedDate, name: props.name },
+				currentTarget: { value: formattedDate, name: props.name }
+			} as unknown as React.ChangeEvent<HTMLInputElement>);
+		} else {
+			if (!isControlled) {
+				setUncontrolledValue("");
+			}
+			props.onChange?.({
+				target: { value: "", name: props.name },
+				currentTarget: { value: "", name: props.name }
+			} as unknown as React.ChangeEvent<HTMLInputElement>);
 		}
-
-		inputRef.current.focus();
-		inputRef.current.click();
 	}
 
 	return (
-		<div className={containerClassName}>
+		<div className={containerClassName} ref={containerRef}>
 			<FieldLabel label={label} htmlFor={inputId} helperText={helperText} />
 			<div className="relative">
-				<input
-					ref={inputRef}
+				<button
+					type="button"
 					id={inputId}
-					type="date"
 					disabled={isDisabled}
+					onClick={() => setIsOpen(!isOpen)}
 					className={twMerge(
-						"form-control typo-body h-12 w-full rounded-sm border border-[#DFE3FA] bg-(--ui-surface) px-4 pr-10 outline-none focus-visible:outline-none transition-colors duration-300 ease-out scheme-light dark:scheme-dark [&::-webkit-calendar-picker-indicator]:opacity-0",
+						"form-control typo-body h-12 w-full rounded-sm border border-[#DFE3FA] bg-(--ui-surface) px-4 flex items-center justify-between outline-none focus-visible:outline-none transition-colors duration-300 ease-out",
 						fieldStateClass(visualState, hasError),
 						className,
 					)}
-					{...(!hasControlledValue && !hasDefaultValue ? { defaultValue: todayIso } : {})}
-					{...props}
-				/>
-				<button
-					type="button"
-					onClick={openDatePicker}
-					disabled={isDisabled}
-					aria-label={`Open ${label} calendar`}
-					className={twMerge(
-						"absolute right-3 top-1/2 -translate-y-1/2",
-						fieldIconClass(visualState, hasError),
-					)}
 				>
-					<CalendarDays size={16} strokeWidth={2.25} />
+					<span className={twMerge("font-bold", dateValue ? "text-dark dark:text-white" : "text-dark/50 dark:text-white/50")}>
+						{dateValue ? dayjs(dateValue).format("DD MMM YYYY") : "Select Date"}
+					</span>
+					<CalendarDays size={16} strokeWidth={2.25} className={fieldIconClass(visualState, hasError)} />
 				</button>
+				
+				{isOpen && !isDisabled ? (
+					<div className="absolute left-0 top-[calc(100%+8px)] z-20 rounded-lg bg-(--ui-surface) p-4 shadow-[0_10px_30px_rgba(72,84,159,0.25)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.25)] border border-(--ui-border)">
+						<DayPicker
+							mode="single"
+							selected={selectedDate}
+							onSelect={handleSelect}
+							showOutsideDays={true}
+							classNames={{
+								month: "space-y-4",
+								caption_label: "text-(--ui-text) font-bold text-center",
+								nav: "absolute left-0 right-0 top-0 flex justify-between px-[6px] z-10 items-center h-7",
+								button_previous: "h-7 w-7 bg-transparent p-0 !text-[#7C5DFA] transition-colors cursor-pointer flex items-center justify-center outline-none [&>svg]:w-5 [&>svg]:h-5 [&_svg]:!stroke-[#7C5DFA] [&_path]:!stroke-[#7C5DFA] [&_svg]:!fill-[#7C5DFA] [&_path]:!fill-[#7C5DFA]",
+								button_next: "h-7 w-7 bg-transparent p-0 !text-[#7C5DFA] transition-colors cursor-pointer flex items-center justify-center outline-none [&>svg]:w-5 [&>svg]:h-5 [&_svg]:!stroke-[#7C5DFA] [&_path]:!stroke-[#7C5DFA] [&_svg]:!fill-[#7C5DFA] [&_path]:!fill-[#7C5DFA]",
+								months: "relative mt-2",
+								month_caption: "flex justify-center items-center h-7 mb-6",
+								month_grid: "w-full",
+								weekdays: "hidden",
+								weeks: "grid grid-cols-7 gap-1 mt-2 w-full",
+								week: "contents",
+								day: "p-0 flex items-center justify-center",
+								day_button: "h-10 w-10 font-bold text-[15px] text-(--ui-text) transition-colors cursor-pointer bg-transparent border-none flex items-center justify-center rounded-full hover:text-[#7C5DFA] hover:bg-[#7C5DFA]/10 outline-none",
+							}}
+							modifiersClassNames={{
+								selected: "[&>button]:!text-[#7C5DFA]",
+								today: "[&>button]:!text-[#7C5DFA]",
+								outside: "[&>button]:!text-(--ui-muted) [&>button]:!opacity-40 [&>button]:pointer-events-none",
+								disabled: "[&>button]:!text-(--ui-muted) [&>button]:!opacity-40 [&>button]:!cursor-not-allowed",
+								hidden: "invisible",
+							}}
+						/>
+					</div>
+				) : null}
 			</div>
 			{errorText ? <p className="mt-1 typo-body-variant text-(--color-danger)">{errorText}</p> : null}
 		</div>
