@@ -84,21 +84,45 @@ export default function InvoiceDetails() {
     );
   }
 
+  const actionButtons = (
+    <>
+      <Button variant="edit" onClick={() => setIsEditOpen(true)} className="px-4 sm:flex-none">
+        Edit
+      </Button>
+      <Button variant="delete" onClick={handleDelete} disabled={isDeleting} className="px-4 sm:flex-none">
+        {isDeleting ? "Deleting..." : "Delete"}
+      </Button>
+      <Button
+        variant="markPaid"
+        leftIcon={null}
+        onClick={handleMarkAsPaid}
+        disabled={invoice.status === "paid" || isMarkingPaid}
+        className="flex-1 sm:flex-none"
+      >
+        {invoice.status === "paid"
+          ? "Paid"
+          : isMarkingPaid
+          ? "Updating..."
+          : "Mark as Paid"}
+      </Button>
+    </>
+  );
+
   return (
-    <section className="min-h-220 grid gap-6">
+    <section className="mx-auto w-full grid gap-5 pb-24 md:pb-12 lg:gap-6">
       <Link
         to={ROUTES.accounts}
-        className="inline-flex items-center gap-3 text-[15px] font-bold tracking-[-0.25px] text-(--ui-text)"
+        className="typo-heading-s inline-flex items-center gap-3 text-(--ui-text)"
       >
-        <ChevronLeftIcon size={16} className="text-(--color-primary) font-extrabold text-[15px]" />
+        <ChevronLeftIcon size={16} className="text-(--color-primary)" />
         Go back
       </Link>
 
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl bg-(--ui-surface) px-6 py-5 shadow-[0_10px_24px_rgba(72,84,159,0.06)]">
-        <div className="flex items-center gap-4">
-          <p className="text-[13px] font-medium text-(--ui-muted)">Status</p>
+      <div className="flex items-center justify-between gap-4 rounded-xl bg-(--ui-surface) px-6 py-4 shadow-[0_10px_24px_rgba(72,84,159,0.06)]">
+        <div className="flex w-full items-center justify-between gap-4 sm:w-auto sm:justify-start">
+          <p className="typo-body text-(--ui-muted)">Status</p>
           <p
-            className={`inline-flex min-w-24 items-center justify-center gap-1.5 rounded-md px-3 py-2 text-[15px] font-bold tracking-[-0.2px] ${
+            className={`typo-heading-s inline-flex min-w-24 items-center justify-center gap-1.5 rounded-md px-3 py-2 ${
               STATUS_PILL_CLASSES[invoice.status]
             }`}
           >
@@ -107,30 +131,13 @@ export default function InvoiceDetails() {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <Button variant="edit" onClick={() => setIsEditOpen(true)}>
-            Edit
-          </Button>
-          <Button variant="delete" onClick={handleDelete} disabled={isDeleting}>
-            {isDeleting ? "Deleting..." : "Delete"}
-          </Button>
-          <Button
-            variant="markPaid"
-            leftIcon={null}
-            onClick={handleMarkAsPaid}
-            disabled={invoice.status === "paid" || isMarkingPaid}
-          >
-            {invoice.status === "paid"
-              ? "Paid"
-              : isMarkingPaid
-              ? "Updating..."
-              : "Mark as Paid"}
-          </Button>
+        <div className="hidden items-center gap-2 sm:flex">
+          {actionButtons}
         </div>
       </div>
 
-      <article className="rounded-xl bg-(--ui-surface) p-8 shadow-[0_10px_24px_rgba(72,84,159,0.06)]">
-        <header className="grid gap-4 sm:grid-cols-2 sm:items-start">
+      <article className="rounded-xl bg-(--ui-surface) p-6 md:p-8 lg:p-10 shadow-[0_10px_24px_rgba(72,84,159,0.06)]">
+        <header className="grid gap-8 sm:grid-cols-2 sm:items-start sm:gap-4">
           <div>
             <h1 className="typo-heading-s text-(--ui-text)">
               <span className="text-(--ui-muted)">#</span>
@@ -138,7 +145,7 @@ export default function InvoiceDetails() {
             </h1>
             <p className="typo-body mt-2 text-(--ui-muted)">{invoice.description}</p>
           </div>
-          <address className="typo-body justify-self-start text-(--ui-muted) not-italic sm:justify-self-end sm:text-right leading-4.5 text-[13px]">
+          <address className="typo-body justify-self-start text-(--ui-muted) not-italic sm:justify-self-end sm:text-right">
             <p>{invoice.senderAddress.street}</p>
             <p>{invoice.senderAddress.city}</p>
             <p>{invoice.senderAddress.postCode}</p>
@@ -146,17 +153,17 @@ export default function InvoiceDetails() {
           </address>
         </header>
 
-        <section className="mt-8 grid gap-6 sm:grid-cols-[1fr_1fr_1fr]">
-          <div className="grid gap-6">
+        <section className="mt-8 grid grid-cols-2 gap-y-8 gap-x-4 sm:grid-cols-[1fr_1fr_1fr]">
+          <div className="grid gap-8">
             <div>
               <p className="typo-body text-(--ui-muted)">Invoice Date</p>
-              <p className="typo-heading-s mt-2 text-(--ui-text)">
+              <p className="typo-heading-s mt-3 text-(--ui-text)">
                 {formatDisplayDate(invoice.createdAt)}
               </p>
             </div>
             <div>
               <p className="typo-body text-(--ui-muted)">Payment Due</p>
-              <p className="typo-heading-s mt-2 text-(--ui-text)">
+              <p className="typo-heading-s mt-3 text-(--ui-text)">
                 {formatDisplayDate(invoice.paymentDue)}
               </p>
             </div>
@@ -164,8 +171,8 @@ export default function InvoiceDetails() {
 
           <div>
             <p className="typo-body text-(--ui-muted)">Bill To</p>
-            <p className="typo-heading-s mt-2 text-(--ui-text)">{invoice.clientName}</p>
-            <address className="typo-body leading-4.5 text-[13px] mt-2 text-(--ui-muted) not-italic">
+            <p className="typo-heading-s mt-3 text-(--ui-text)">{invoice.clientName}</p>
+            <address className="typo-body mt-2 text-(--ui-muted) not-italic">
               <p>{invoice.clientAddress.street}</p>
               <p>{invoice.clientAddress.city}</p>
               <p>{invoice.clientAddress.postCode}</p>
@@ -173,42 +180,53 @@ export default function InvoiceDetails() {
             </address>
           </div>
 
-          <div>
+          <div className="col-span-2 sm:col-span-1">
             <p className="typo-body text-(--ui-muted)">Sent to</p>
-            <p className="typo-heading-s mt-2 text-(--ui-text)">{invoice.clientEmail}</p>
+            <p className="typo-heading-s mt-3 break-all text-(--ui-text)">{invoice.clientEmail}</p>
           </div>
         </section>
 
         <section className="mt-10 overflow-hidden rounded-lg bg-(--color-surface-soft) dark:bg-(--color-surface-dark-hover)">
-          <div className="hidden grid-cols-[1.7fr_0.7fr_0.8fr_0.9fr] px-8 py-6 text-[13px] font-medium text-(--ui-muted) sm:grid">
+          <div className="hidden grid-cols-[1.7fr_0.7fr_0.8fr_0.9fr] px-8 py-6 typo-body text-(--ui-muted) sm:grid">
             <p>Item Name</p>
             <p className="text-center">QTY.</p>
             <p className="text-right">Price</p>
             <p className="text-right">Total</p>
           </div>
 
-          <div className="grid gap-4 px-8 py-6 sm:gap-5">
+          <div className="grid gap-6 p-6 sm:gap-8 sm:px-8 sm:py-6">
             {invoice.items.map((item) => (
               <div
                 key={item.id}
-                className="grid grid-cols-[1.7fr_0.7fr_0.8fr_0.9fr] items-center text-[15px] font-bold tracking-[-0.25px]"
+                className="flex items-center justify-between sm:grid sm:grid-cols-[1.7fr_0.7fr_0.8fr_0.9fr]"
               >
-                <p className="text-(--ui-text) font-extrabold">{item.name}</p>
-                <p className="text-center text-(--ui-muted)">{item.quantity}</p>
-                <p className="text-right text-(--color-text-subtle)">
+                <div className="grid gap-2 sm:contents">
+                   <p className="typo-heading-s text-(--ui-text)">{item.name}</p>
+                   <p className="typo-heading-s text-(--ui-muted) sm:hidden">
+                     {item.quantity} x {formatCurrency(item.price)}
+                   </p>
+                </div>
+                
+                <p className="hidden text-center typo-heading-s text-(--ui-muted) sm:block">{item.quantity}</p>
+                <p className="hidden text-right typo-heading-s text-(--ui-muted) sm:block">
                   {formatCurrency(item.price)}
                 </p>
-                <p className="text-right text-(--ui-text)">{formatCurrency(item.total)}</p>
+                <p className="text-right typo-heading-s text-(--ui-text)">{formatCurrency(item.total)}</p>
               </div>
             ))}
           </div>
 
-          <div className="flex items-center justify-between bg-(--color-surface-dark-hover) dark:bg-[#141625] px-8 py-7 text-white">
-            <p className="text-[13px] font-medium">Amount Due</p>
-            <p className="text-[32px] font-bold tracking-[-1px]">{formatCurrency(invoice.total)}</p>
+          <div className="flex items-center justify-between bg-(--color-surface-dark-hover) dark:bg-[#0C0E16] px-6 py-6 sm:px-8 sm:py-7 text-white">
+            <p className="typo-body">Amount Due</p>
+            <p className="typo-heading-m sm:typo-heading-l">{formatCurrency(invoice.total)}</p>
           </div>
         </section>
       </article>
+
+      {/* Sticky Bottom Actions Bar for Mobile */}
+      <footer className="fixed bottom-0 left-0 z-30 flex w-full items-center gap-2 bg-(--ui-surface) p-6 shadow-[0_-10px_20px_rgba(72,84,159,0.1)] sm:hidden">
+        {actionButtons}
+      </footer>
 
       <CreateInvoiceModal
         key={`${invoice.id}-${isEditOpen ? "open" : "closed"}`}
@@ -228,7 +246,7 @@ export default function InvoiceDetails() {
         panelClassName="max-w-[30rem] rounded-xl"
       >
         <div className="space-y-6 p-2 md:p-3">
-          <h2 className="text-[clamp(1.5rem,2.6vw,2rem)] font-bold leading-[1.1] tracking-[-0.7px] text-(--ui-text)">
+          <h2 className="typo-heading-m text-(--ui-text)">
             Confirm Deletion
           </h2>
           <p className="typo-body text-(--ui-muted)">

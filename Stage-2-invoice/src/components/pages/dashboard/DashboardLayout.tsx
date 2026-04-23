@@ -7,7 +7,7 @@ type DashboardLayoutProps = {
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <section className="mx-auto w-full max-w-screen-2xl px-6 py-8 md:px-10 lg:px-16 lg:pl-[12.5rem] xl:px-24">
+    <section className="mx-auto w-full max-w-screen-xl px-8 pt-36 pb-8 lg:pt-8 lg:px-16 lg:pl-[12.5rem]">
       <Sidebar />
 
       <div className="flex min-w-0 flex-col gap-8">

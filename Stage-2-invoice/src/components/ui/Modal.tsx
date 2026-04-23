@@ -33,6 +33,8 @@ export default function Modal({
   const descriptionId = useId();
   const panelRef = useRef<HTMLElement>(null);
   const previousActiveElementRef = useRef<HTMLElement | null>(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!isOpen) {
@@ -62,7 +64,7 @@ export default function Modal({
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        onClose();
+        onCloseRef.current();
         return;
       }
 
@@ -105,7 +107,7 @@ export default function Modal({
       document.removeEventListener("keydown", handleKeyDown);
       previousActiveElementRef.current?.focus();
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   if (!isOpen) {
     return null;
@@ -134,7 +136,7 @@ export default function Modal({
           placement === "center"
             ? "items-center justify-center p-4 md:p-6"
             : placement === "left"
-            ? "items-stretch justify-start pr-4 md:pr-6"
+            ? "items-stretch justify-start md:pr-6"
             : "items-stretch justify-end pl-4 md:pl-6",
         )}
       >

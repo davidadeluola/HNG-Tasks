@@ -119,38 +119,54 @@ html.dark body {
 }
 
 .typo-heading-m {
-  font-size: var(--type-hm-size);
-  line-height: var(--type-hm-line);
-  letter-spacing: var(--type-hm-track);
+  font-size: 20px;
+  line-height: 22px;
+  letter-spacing: -0.63px;
   font-weight: var(--font-weight-bold);
 }
 
 .typo-heading-s {
-  font-size: var(--type-hs-size);
-  line-height: var(--type-hs-line);
-  letter-spacing: var(--type-hs-track);
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: -0.25px;
   font-weight: var(--font-weight-bold);
 }
 
 .typo-heading-s-variant {
-  font-size: var(--type-hsv-size);
-  line-height: var(--type-hsv-line);
-  letter-spacing: var(--type-hsv-track);
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
   font-weight: var(--font-weight-bold);
 }
 
 .typo-body {
-  font-size: var(--type-body-size);
-  line-height: var(--type-body-line);
-  letter-spacing: var(--type-body-track);
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: -0.1px;
   font-weight: var(--font-weight-medium);
 }
 
 .typo-body-variant {
-  font-size: var(--type-bodyv-size);
-  line-height: var(--type-bodyv-line);
-  letter-spacing: var(--type-bodyv-track);
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
   font-weight: var(--font-weight-medium);
+}
+
+@media (min-width: 768px) {
+  .typo-heading-m {
+    font-size: var(--type-hm-size);
+    line-height: var(--type-hm-line);
+    letter-spacing: var(--type-hm-track);
+  }
+}
+
+@media (max-width: 640px) {
+  .typo-heading-l {
+    font-size: 24px;
+    line-height: 22px;
+    letter-spacing: -0.75px;
+  }
 }
 
 .typo-stamp {
@@ -244,10 +260,5 @@ html[data-theme="dark"] .modal-scroll {
     grid-template-columns: 1fr;
     gap: 28px;
     padding: 24px 16px;
-  }
-
-  .typo-heading-l {
-    font-size: 32px;
-    line-height: 30px;
   }
 }

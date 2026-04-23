@@ -73,7 +73,7 @@ export function CreateInvoiceModal({
       description={undefined}
       placement="left"
       className="lg:left-24"
-      panelClassName="max-w-200 rounded-none"
+      panelClassName="max-w-full rounded-none md:max-w-[80%] md:rounded-r-xl lg:max-w-200"
     >
       <form className="grid gap-10 pb-24">
         <h1 className="typo-heading-m text-(--ui-text)">
@@ -91,7 +91,7 @@ export function CreateInvoiceModal({
               updateAddress("senderAddress", "street", event.target.value)
             }
           />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <TextInput
               label="City"
               value={formInvoice.senderAddress.city}
@@ -112,6 +112,7 @@ export function CreateInvoiceModal({
               onChange={(event) =>
                 updateAddress("senderAddress", "country", event.target.value)
               }
+              containerClassName="col-span-2 sm:col-span-1"
             />
           </div>
         </section>
@@ -143,7 +144,7 @@ export function CreateInvoiceModal({
             }
           />
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             <TextInput
               label="City"
               value={formInvoice.clientAddress.city}
@@ -164,6 +165,7 @@ export function CreateInvoiceModal({
               onChange={(event) =>
                 updateAddress("clientAddress", "country", event.target.value)
               }
+              containerClassName="col-span-2 sm:col-span-1"
             />
           </div>
 
@@ -214,14 +216,14 @@ export function CreateInvoiceModal({
             <span aria-hidden="true" />
           </div>
 
-          <div className="grid gap-4">
+          <div className="grid gap-6">
             {formInvoice.items.map((item, index) => {
               const lineTotal = item.quantity * item.price;
 
               return (
                 <div
                   key={item.id}
-                  className="grid grid-cols-1 gap-3 sm:grid-cols-[1.6fr_0.5fr_0.8fr_0.8fr_32px] sm:items-end sm:gap-4"
+                  className="grid gap-3 sm:grid-cols-[1.6fr_0.5fr_0.8fr_0.8fr_32px] sm:items-end sm:gap-4"
                 >
                   <TextInput
                     label="Item Name"
@@ -233,51 +235,53 @@ export function CreateInvoiceModal({
                     errorTextClassName={MODAL_ERROR_TEXT_CLASS}
                     containerClassName="sm:[&>div]:hidden"
                   />
-                  <TextInput
-                    label="Qty."
-                    type="number"
-                    min={1}
-                    value={item.quantity}
-                    onChange={(event) =>
-                      updateItem(index, "quantity", Number(event.target.value))
-                    }
-                    errorText={errors[`items.${index}.quantity`]}
-                    errorTextClassName={MODAL_ERROR_TEXT_CLASS}
-                    containerClassName="sm:[&>div]:hidden"
-                  />
-                  <TextInput
-                    label="Price"
-                    type="number"
-                    min={0}
-                    value={item.price}
-                    onChange={(event) =>
-                      updateItem(index, "price", Number(event.target.value))
-                    }
-                    errorText={errors[`items.${index}.price`]}
-                    errorTextClassName={MODAL_ERROR_TEXT_CLASS}
-                    containerClassName="sm:[&>div]:hidden"
-                  />
+                  <div className="grid grid-cols-[1fr_1.4fr_1fr_32px] items-end gap-3 sm:contents">
+                    <TextInput
+                      label="Qty."
+                      type="number"
+                      min={1}
+                      value={item.quantity}
+                      onChange={(event) =>
+                        updateItem(index, "quantity", Number(event.target.value))
+                      }
+                      errorText={errors[`items.${index}.quantity`]}
+                      errorTextClassName={MODAL_ERROR_TEXT_CLASS}
+                      containerClassName="sm:[&>div]:hidden"
+                    />
+                    <TextInput
+                      label="Price"
+                      type="number"
+                      min={0}
+                      value={item.price}
+                      onChange={(event) =>
+                        updateItem(index, "price", Number(event.target.value))
+                      }
+                      errorText={errors[`items.${index}.price`]}
+                      errorTextClassName={MODAL_ERROR_TEXT_CLASS}
+                      containerClassName="sm:[&>div]:hidden"
+                    />
 
-                  <div>
-                    <div className="mb-2 sm:hidden">
-                      <span className="form-label">Total</span>
+                    <div>
+                      <div className="mb-2 sm:hidden">
+                        <span className="form-label">Total</span>
+                      </div>
+                      <p className="flex h-12 items-center text-[15px] font-bold text-(--ui-muted)">
+                        {lineTotal.toLocaleString("en-GB", {
+                          style: "currency",
+                          currency: "GBP",
+                        })}
+                      </p>
                     </div>
-                    <p className="flex h-12 items-center text-[15px] font-bold text-(--ui-muted)">
-                      {lineTotal.toLocaleString("en-GB", {
-                        style: "currency",
-                        currency: "GBP",
-                      })}
-                    </p>
-                  </div>
 
-                  <button
-                    type="button"
-                    onClick={() => removeItem(index)}
-                    className="inline-flex h-12 w-8 items-center justify-center self-end text-(--ui-muted) transition-colors duration-200 ease-out hover:text-(--color-danger)"
-                    aria-label="Remove item"
-                  >
-                    <Trash2 size={16} />
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => removeItem(index)}
+                      className="inline-flex h-12 w-8 items-center justify-center self-end text-(--ui-muted) transition-colors duration-200 ease-out hover:text-(--color-danger)"
+                      aria-label="Remove item"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </div>
               );
             })}
@@ -294,50 +298,47 @@ export function CreateInvoiceModal({
         </section>
 
         <footer className="sticky bottom-0 -mx-5 border-t border-(--ui-border) bg-(--ui-bg) px-5 pb-1 pt-5 md:-mx-7 md:px-7">
-          <div className={`flex flex-wrap items-center gap-3 ${isEditing ? "justify-end" : "justify-between"}`}>
-            {!isEditing && (
-              <Button variant="discard" type="button" onClick={handleClose}>
+          {isEditing ? (
+            <div className="flex items-center justify-end gap-2">
+              <Button variant="modalGhost" type="button" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                leftIcon={null}
+                type="button"
+                onClick={() => handleSubmit("pending")}
+                disabled={isSubmitting !== null}
+              >
+                {isSubmitting === "pending" ? "Saving..." : "Save Changes"}
+              </Button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Button variant="discard" type="button" onClick={handleClose} className="flex-1 px-2 text-xs sm:px-6 sm:text-[15px]">
                 Discard
               </Button>
-            )}
-
-            {isEditing ? (
-              <div className="flex flex-wrap items-center gap-2">
-                <Button variant="modalGhost" type="button" onClick={handleClose}>
-                  Cancel
-                </Button>
-                <Button
-                  variant="primary"
-                  leftIcon={null}
-                  type="button"
-                  onClick={() => handleSubmit("pending")}
-                  disabled={isSubmitting !== null}
-                >
-                  {isSubmitting === "pending" ? "Saving..." : "Save Changes"}
-                </Button>
-              </div>
-            ) : (
-              <div className="flex flex-wrap items-center gap-2">
-                <Button
-                  variant="saveDraft"
-                  type="button"
-                  onClick={() => handleSubmit("draft")}
-                  disabled={isSubmitting !== null}
-                >
-                  {isSubmitting === "draft" ? "Saving..." : "Save as Draft"}
-                </Button>
-                <Button
-                  variant="primary"
-                  leftIcon={null}
-                  type="button"
-                  onClick={() => handleSubmit("pending")}
-                  disabled={isSubmitting !== null}
-                >
-                  {isSubmitting === "pending" ? "Saving..." : "Save & Send"}
-                </Button>
-              </div>
-            )}
-          </div>
+              <Button
+                variant="saveDraft"
+                type="button"
+                onClick={() => handleSubmit("draft")}
+                disabled={isSubmitting !== null}
+                className="flex-1 px-2 text-xs sm:px-6 sm:text-[15px]"
+              >
+                {isSubmitting === "draft" ? "Saving..." : "Save as Draft"}
+              </Button>
+              <Button
+                variant="primary"
+                leftIcon={null}
+                type="button"
+                onClick={() => handleSubmit("pending")}
+                disabled={isSubmitting !== null}
+                className="flex-1 px-2 text-xs sm:px-6 sm:text-[15px]"
+              >
+                {isSubmitting === "pending" ? "Saving..." : "Save"}
+              </Button>
+            </div>
+          )}
         </footer>
       </form>
     </Modal>
