@@ -1,0 +1,268 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --color-primary: #7c5dfa;
+  --color-primary-hover: #9277ff;
+  --color-surface-dark: #1e2139;
+  --color-surface-dark-hover: #252945;
+
+  --color-text-subtle: #7e88c3;
+  --color-text-muted: #888eb0;
+  --color-border-soft: #dfe3fa;
+
+  --color-bg: #f8f8fb;
+  --color-bg-dark: #141625;
+  --color-bg-dark-deep: #0c0e16;
+  --color-danger: #ec5757;
+  --color-danger-soft: #ff9797;
+
+  --color-surface: #ffffff;
+  --color-surface-soft: #f9fafe;
+  --color-surface-faint: #f4f5ff;
+  --color-surface-dark-soft: #1a1f3a;
+
+  /* Legacy aliases kept for compatibility while the codebase migrates */
+  --color-primary-500: var(--color-primary);
+  --color-primary-400: var(--color-primary-hover);
+  --color-navy-900: var(--color-surface-dark);
+  --color-navy-800: var(--color-surface-dark-hover);
+  --color-bluegray-300: var(--color-text-subtle);
+  --color-bluegray-200: var(--color-text-muted);
+  --color-bluegray-100: var(--color-border-soft);
+  --color-bg-light: var(--color-bg);
+  --color-bg-dark: #141625;
+  --color-bg-dark-deep: #0c0e16;
+  --color-danger-500: var(--color-danger);
+  --color-danger-300: var(--color-danger-soft);
+
+  --ui-bg: var(--color-bg);
+  --ui-text: var(--color-surface-dark);
+  --ui-muted: var(--color-text-subtle);
+  --ui-surface: var(--color-surface);
+  --ui-border: var(--color-border-soft);
+  --ui-track: var(--color-border-soft);
+  --ui-knob: var(--color-primary);
+  --font-family-base: "League Spartan", "Segoe UI", sans-serif;
+  font-family: var(--font-family-base);
+
+  /* Typography */
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  --type-hl-size: 36px;
+  --type-hl-line: 33px;
+  --type-hl-track: -1px;
+
+  --type-hm-size: 24px;
+  --type-hm-line: 22px;
+  --type-hm-track: -0.75px;
+
+  --type-hs-size: 15px;
+  --type-hs-line: 24px;
+  --type-hs-track: -0.25px;
+
+  --type-hsv-size: 15px;
+  --type-hsv-line: 15px;
+  --type-hsv-track: -0.25px;
+
+  --type-body-size: 13px;
+  --type-body-line: 18px;
+  --type-body-track: -0.1px;
+
+  --type-bodyv-size: 13px;
+  --type-bodyv-line: 15px;
+  --type-bodyv-track: -0.25px;
+
+  --type-stamp-color: var(--color-bluegray-300);
+  --type-callout-bg: #f4f5ff;
+}
+
+html[data-theme="dark"] {
+  --ui-bg: var(--color-bg-dark);
+  --ui-text: #f8f8fb;
+  --ui-muted: var(--color-text-muted);
+  --ui-surface: var(--color-surface-dark);
+  --ui-border: var(--color-surface-dark-hover);
+  --ui-track: var(--color-surface-dark-hover);
+  --ui-knob: var(--color-primary-hover);
+  --type-stamp-color: var(--color-text-muted);
+  --type-callout-bg: var(--color-surface-dark-soft);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ui-bg);
+  color: var(--ui-text);
+  font-family: var(--font-family-base);
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+html.dark body {
+  background: var(--ui-bg);
+  /* color: var(--ui-text); */
+}
+
+/* Typography Utilities */
+.typo-heading-l {
+  font-size: 36px;
+  line-height: 33px;
+  letter-spacing: -1px;
+  font-weight: var(--font-weight-bold);
+}
+
+.typo-heading-m {
+  font-size: 24px;
+  line-height: 22px;
+  letter-spacing: -0.75px;
+  font-weight: var(--font-weight-bold);
+}
+
+.typo-heading-s {
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: -0.25px;
+  font-weight: var(--font-weight-bold);
+}
+
+.typo-heading-s-variant {
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  font-weight: var(--font-weight-bold);
+}
+
+.typo-body {
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: -0.1px;
+  font-weight: var(--font-weight-medium);
+}
+
+.typo-body-variant {
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  font-weight: var(--font-weight-medium);
+}
+
+@media (max-width: 767px) {
+  .typo-heading-l {
+    font-size: 32px;
+    line-height: 30px;
+  }
+  .typo-heading-m {
+    font-size: 20px;
+    line-height: 22px;
+    letter-spacing: -0.63px;
+  }
+}
+
+@media (max-width: 640px) {
+  .typo-heading-l {
+    font-size: 24px;
+    line-height: 22px;
+    letter-spacing: -0.75px;
+  }
+}
+
+.typo-stamp {
+  color: var(--type-stamp-color);
+  font-size: 13px;
+  line-height: 1.2;
+  letter-spacing: -0.1px;
+  font-weight: var(--font-weight-medium);
+  margin: 0;
+}
+
+.form-label {
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  letter-spacing: var(--type-body-track);
+  font-weight: var(--font-weight-medium);
+  color: var(--ui-muted);
+}
+
+.form-helper {
+  font-size: var(--type-bodyv-size);
+  line-height: var(--type-bodyv-line);
+  letter-spacing: var(--type-bodyv-track);
+  font-weight: var(--font-weight-medium);
+  color: var(--ui-muted);
+}
+
+.typography-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  padding: 40px 24px;
+}
+
+.typography-column {
+  display: grid;
+  gap: 20px;
+}
+
+.typography-title {
+  color: var(--type-stamp-color);
+  margin: 0 0 8px;
+}
+
+.typography-alphabet {
+  color: var(--type-stamp-color);
+  text-transform: none;
+  max-width: 34ch;
+}
+
+.typography-callout {
+  background: var(--type-callout-bg);
+  color: var(--type-stamp-color);
+  border: 1px solid var(--ui-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  width: fit-content;
+}
+
+.modal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #DFE3FA transparent;
+  scrollbar-gutter: stable;
+
+}
+
+.modal-scroll::-webkit-scrollbar {
+  inline-size: 8px;
+}
+
+.modal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(124, 93, 250, 0.38);
+  border-radius: 999px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 93, 250, 0.55);
+}
+
+html[data-theme="dark"] .modal-scroll {
+  scrollbar-color: #252945 transparent;
+  scrollbar-gutter: stable;
+}
+
+@media (max-width: 900px) {
+  .typography-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 24px 16px;
+  }
+}

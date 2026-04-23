@@ -1,0 +1,10 @@
+import { AppLayout } from '../layouts/app/AppLayout'
+import { DashboardPage as NewInvoiceScreen } from '../components/pages/dashboard'
+
+export default function NewInvoicePage() {
+  return (
+    <AppLayout showChrome={false}>
+      <NewInvoiceScreen />
+    </AppLayout>
+  )
+}
