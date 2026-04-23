@@ -7,11 +7,15 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "api:dev": "node --watch scripts/express-api/server.mjs",
+    "api:start": "node scripts/express-api/server.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
+    "cors": "^2.8.6",
     "dayjs": "^1.11.20",
+    "express": "^5.2.1",
     "idb": "^8.0.3",
     "lucide-react": "^1.8.0",
     "react": "^19.2.5",

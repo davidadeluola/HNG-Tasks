@@ -294,21 +294,28 @@ export function CreateInvoiceModal({
         </section>
 
         <footer className="sticky bottom-0 -mx-5 border-t border-(--ui-border) bg-(--ui-bg) px-5 pb-1 pt-5 md:-mx-7 md:px-7">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <Button variant="modalGhost" type="button" onClick={handleClose}>
-              {isEditing ? "Cancel" : "Discard"}
-            </Button>
+          <div className={`flex flex-wrap items-center gap-3 ${isEditing ? "justify-end" : "justify-between"}`}>
+            {!isEditing && (
+              <Button variant="discard" type="button" onClick={handleClose}>
+                Discard
+              </Button>
+            )}
 
             {isEditing ? (
-              <Button
-                variant="primary"
-                leftIcon={null}
-                type="button"
-                onClick={() => handleSubmit("pending")}
-                disabled={isSubmitting !== null}
-              >
-                {isSubmitting === "pending" ? "Saving..." : "Save Changes"}
-              </Button>
+              <div className="flex flex-wrap items-center gap-2">
+                <Button variant="modalGhost" type="button" onClick={handleClose}>
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  leftIcon={null}
+                  type="button"
+                  onClick={() => handleSubmit("pending")}
+                  disabled={isSubmitting !== null}
+                >
+                  {isSubmitting === "pending" ? "Saving..." : "Save Changes"}
+                </Button>
+              </div>
             ) : (
               <div className="flex flex-wrap items-center gap-2">
                 <Button

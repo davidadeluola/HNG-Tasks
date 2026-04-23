@@ -22,6 +22,18 @@ This build delivers a production-style invoice workflow in React, centered aroun
 - Context API for invoice and theme state
 - IndexedDB (`idb`) + LocalStorage hybrid persistence
 
+## Full-Stack Note (Express Option)
+
+By default, the current app runs as a frontend-first architecture with browser persistence.
+
+To make it fully full-stack, this branch adds a Node/Express API option in `scripts/express-api/server.mjs`.
+That gives you:
+- React frontend
+- Express backend API
+- Server-side persisted invoice data (JSON store)
+
+**Important Production Note:** The Express backend relies on writing to a local `invoices.json` file on the disk. Because of this, it is intentionally **not connected** to the frontend by default. Serverless hosting platforms like Vercel use ephemeral, read-only filesystems that will crash or immediately lose data when attempting to write to local files. We deliberately chose to use LocalStorage and IndexedDB as the default live data source to prevent breaking in production, ensuring a stable deployment without the overhead of provisioning a remote database (like PostgreSQL or MongoDB).
+
 ## Architecture Overview
 
 The app is structured in a modular, feature-oriented layout:
@@ -194,6 +206,18 @@ npm run build
 
 ```bash
 npm run preview
+```
+
+5. Run optional Express API backend:
+
+```bash
+npm run api:dev
+```
+
+or:
+
+```bash
+npm run api:start
 ```
 
 ## Suggested Submission Checklist

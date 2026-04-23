@@ -11,7 +11,8 @@ export type ButtonVariant =
   | "hide"
   | "addItem"
   | "ghost"
-  | "modalGhost";
+  | "modalGhost"
+  | "discard";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
@@ -38,6 +39,8 @@ const variantClasses: Record<ButtonVariant, string> = {
     "border border-(--color-border-soft) bg-(--color-surface-soft) text-(--color-text-subtle) hover:border-(--color-border-soft) hover:bg-(--color-border-soft) focus-visible:ring-(--color-text-subtle) dark:border-(--color-surface-dark-hover) dark:bg-(--color-surface-dark-hover) dark:text-(--color-border-soft) dark:hover:bg-(--color-surface-dark) dark:hover:text-white dark:focus-visible:ring-0 dark:focus-visible:ring-offset-0",
   modalGhost:
     "bg-(--color-surface-soft) text-(--color-text-subtle) hover:bg-(--color-border-soft) focus-visible:ring-(--color-text-subtle) dark:bg-(--color-surface-dark-hover) dark:text-(--color-border-soft) dark:hover:bg-(--color-surface-dark) dark:hover:text-white dark:focus-visible:ring-0 dark:focus-visible:ring-offset-0",
+  discard:
+    "bg-(--color-surface-soft) text-(--color-text-subtle) hover:bg-(--color-border-soft) focus-visible:ring-(--color-text-subtle) dark:bg-(--color-surface-soft) dark:text-(--color-text-subtle) dark:hover:bg-(--color-border-soft)",
 };
 
 function Button({
