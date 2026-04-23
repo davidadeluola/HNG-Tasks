@@ -216,7 +216,7 @@ export default function InvoiceDetails() {
             ))}
           </div>
 
-          <div className="flex items-center justify-between bg-(--color-surface-dark-hover) dark:bg-[#0C0E16] px-6 py-6 sm:px-8 sm:py-7 text-white">
+          <div className="flex items-center justify-between bg-(--color-surface-dark-hover) dark:bg-(--color-bg-dark-deep) px-6 py-6 sm:px-8 sm:py-7 text-white">
             <p className="typo-body">Amount Due</p>
             <p className="typo-heading-m sm:typo-heading-l">{formatCurrency(invoice.total)}</p>
           </div>
