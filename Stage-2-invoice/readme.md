@@ -33,6 +33,7 @@ This build delivers a production-style invoice workflow in React, centered aroun
 - Tailwind CSS v4 utilities + design tokens
 - Context API for invoice and theme state
 - IndexedDB (`idb`) + LocalStorage hybrid persistence
+- **Full Design Tokenization**: Eliminated hardcoded hex values in favor of a unified CSS variable system, ensuring perfect theme consistency and maintainability.
 
 ## Full-Stack Note (Express Option)
 

@@ -420,7 +420,7 @@ export function FilterStateInput({
 				type="button"
 				aria-haspopup="menu"
 				aria-expanded={isOpen}
-				aria-label={label}
+				aria-label="Filter invoices"
 				onClick={() => setIsOpen((previous) => !previous)}
 				className={twMerge(
 					"inline-flex items-center gap-3 typo-heading-s text-(--ui-text) outline-none transition-colors duration-200 ease-out hover:text-(--color-primary) focus-visible:text-(--color-primary)",
