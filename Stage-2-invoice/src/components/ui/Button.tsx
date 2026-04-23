@@ -55,8 +55,8 @@ function Button({
     variant === "primary"
       ? "h-12 min-w-[160px] gap-2 rounded-full pl-1.5 pr-6"
       : variant === "edit"
-      ? "h-12 gap-2 rounded-full px-7"
-      : "h-12 gap-2 rounded-full px-6";
+      ? "h-12 gap-2 rounded-full px-6"
+      : "h-12 gap-2 rounded-full px-5";
 
   const resolvedLeftIcon =
     leftIcon === undefined && variant === "primary" ? (

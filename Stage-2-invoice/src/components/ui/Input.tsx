@@ -52,7 +52,7 @@ type FilterStateOption = {
 };
 
 type FilterStateInputProps = {
-	label?: string;
+	label?: ReactNode;
 	options: FilterStateOption[];
 	value: Set<string>;
 	onChange: (nextValue: Set<string>) => void;
@@ -423,7 +423,7 @@ export function FilterStateInput({
 				aria-label={label}
 				onClick={() => setIsOpen((previous) => !previous)}
 				className={twMerge(
-					"inline-flex items-center gap-3 text-[15px] font-bold tracking-[-0.25px] text-(--ui-text) outline-none transition-colors duration-200 ease-out hover:text-(--color-primary) focus-visible:text-(--color-primary)",
+					"inline-flex items-center gap-3 typo-heading-s text-(--ui-text) outline-none transition-colors duration-200 ease-out hover:text-(--color-primary) focus-visible:text-(--color-primary)",
 					buttonClassName,
 				)}
 			>
@@ -448,7 +448,7 @@ export function FilterStateInput({
 				>
 					<ul className="grid gap-3">
 						<li>
-							<label className="inline-flex cursor-pointer items-center gap-3 text-[15px] font-bold tracking-[-0.25px] text-(--ui-text)">
+							<label className="inline-flex cursor-pointer items-center gap-3 typo-heading-s text-(--ui-text)">
 								<input
 									type="checkbox"
 									checked={allSelected}
@@ -470,7 +470,7 @@ export function FilterStateInput({
 
 							return (
 								<li key={option.value}>
-									<label className="inline-flex cursor-pointer items-center gap-3 text-[15px] font-bold tracking-[-0.25px] text-(--ui-text)">
+									<label className="inline-flex cursor-pointer items-center gap-3 typo-heading-s text-(--ui-text)">
 										<input
 											type="checkbox"
 											checked={isChecked}

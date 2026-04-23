@@ -199,7 +199,7 @@ export function CreateInvoiceModal({
         </section>
 
         <section className="grid gap-4">
-          <h2 className="text-xl font-bold tracking-[-0.4px] text-(--ui-muted)">
+          <h2 className="typo-heading-m text-(--ui-muted)">
             Item List
           </h2>
           {itemsError ? (
@@ -208,7 +208,7 @@ export function CreateInvoiceModal({
             </p>
           ) : null}
 
-          <div className="hidden grid-cols-[1.6fr_0.5fr_0.8fr_0.8fr_32px] gap-4 px-1 text-xs font-medium text-(--ui-muted) sm:grid">
+          <div className="hidden grid-cols-[1.6fr_0.5fr_0.8fr_0.8fr_32px] gap-4 px-1 typo-body text-(--ui-muted) sm:grid">
             <p>Item Name</p>
             <p>Qty.</p>
             <p>Price</p>

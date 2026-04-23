@@ -48,9 +48,9 @@ export function Sidebar() {
       <header className="fixed left-0 top-0 z-40 flex h-20 w-full items-center bg-(--color-surface-dark-hover) lg:hidden">
         <LogoBlock className="h-full w-20 rounded-r-[20px]" />
 
-        <div className="flex flex-1 items-center justify-end gap-6 px-6">
+        <div className="flex flex-1 items-center justify-end gap-6 h-full px-6">
           <ThemeToggle />
-          <div className="h-8 w-px bg-[#494E6E]" />
+          <div className="h-full w-px bg-[#494E6E]" />
           <AvatarButton />
         </div>
       </header>

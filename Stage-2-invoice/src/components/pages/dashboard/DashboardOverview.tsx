@@ -39,10 +39,10 @@ export default function DashboardOverview() {
       : `${visibleInvoices.length} invoices`;
 
   return (
-    <section className="grid gap-8">
+    <section className="grid gap-8 mt-4">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="typo-heading-m sm:typo-heading-l text-(--ui-text)">
+          <h1 className="typo-heading-l sm:typo-heading-l text-(--ui-text)">
             Invoices
           </h1>
           <p className="typo-body mt-1 text-(--ui-muted) sm:mt-2">
@@ -63,7 +63,12 @@ export default function DashboardOverview() {
 
         <div className="flex items-center gap-4 sm:gap-6">
           <FilterStateInput
-            label="Filter"
+            label={
+              <>
+                <span className="sm:hidden">Filter</span>
+                <span className="hidden sm:inline">Filter by status</span>
+              </>
+            }
             options={STATUS_OPTIONS.map((option) => ({
               label: option.label,
               value: option.value,
@@ -93,7 +98,7 @@ export default function DashboardOverview() {
               alt="No invoices illustration"
               className="h-64 w-64"
             />
-            <h3 className="mt-12 text-[24px] font-bold leading-[1.1] tracking-[-0.75px] text-(--ui-text)">
+            <h3 className="mt-12 typo-heading-m text-(--ui-text)">
               There is nothing here
             </h3>
             <p className="typo-body mt-4 text-(--ui-muted)">

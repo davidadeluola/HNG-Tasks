@@ -112,16 +112,16 @@ html.dark body {
 
 /* Typography Utilities */
 .typo-heading-l {
-  font-size: var(--type-hl-size);
-  line-height: var(--type-hl-line);
-  letter-spacing: var(--type-hl-track);
+  font-size: 36px;
+  line-height: 33px;
+  letter-spacing: -1px;
   font-weight: var(--font-weight-bold);
 }
 
 .typo-heading-m {
-  font-size: 20px;
+  font-size: 24px;
   line-height: 22px;
-  letter-spacing: -0.63px;
+  letter-spacing: -0.75px;
   font-weight: var(--font-weight-bold);
 }
 
@@ -153,11 +153,15 @@ html.dark body {
   font-weight: var(--font-weight-medium);
 }
 
-@media (min-width: 768px) {
+@media (max-width: 767px) {
+  .typo-heading-l {
+    font-size: 32px;
+    line-height: 30px;
+  }
   .typo-heading-m {
-    font-size: var(--type-hm-size);
-    line-height: var(--type-hm-line);
-    letter-spacing: var(--type-hm-track);
+    font-size: 20px;
+    line-height: 22px;
+    letter-spacing: -0.63px;
   }
 }
 

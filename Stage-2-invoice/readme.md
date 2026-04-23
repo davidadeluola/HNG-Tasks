@@ -10,6 +10,18 @@ A responsive React + TypeScript invoice management application focused on real i
 
 This submission also includes a marketing landing page as an enhancement beyond the core dashboard requirements.
 
+## Recent Enhancements (Responsive Polish & Design System)
+
+The application has undergone a significant "Technical Brutalist" visual and structural refinement to ensure a premium experience across all devices:
+
+- **Strict Typography System**: Implemented a robust utility-based typography system using **League Spartan** tokens. Headings (L, M, S) and Body styles strictly follow the design system for font size, line height, and letter-spacing.
+- **Mobile-First Refinement**: Re-engineered the Dashboard and Invoice Details for extreme mobile accessibility (320px+). This includes:
+  - **Sticky Action Bars**: Action buttons move to a high-contrast sticky footer on mobile for easy thumb reach.
+  - **Grid Optimization**: Invoice cards and info sections use a dynamic 2-row grid on small screens and transition to a multi-column horizontal layout on desktop.
+- **Layout Stabilization**: Optimized the container logic to handle ultra-wide screens (1440px+), ensuring content remains centered and proportional without "stretching" bugs.
+- **UX Stability**: Resolved keyboard focus issues in the Create/Edit modal to ensure seamless data entry.
+- **Dynamic Contextual Labels**: Responsive UI elements (like "Filter" vs "Filter by status") that adapt their context based on available screen real estate.
+
 ## Stage Narrative (Presentation Voice)
 
 This build delivers a production-style invoice workflow in React, centered around clean UI, modular structure, and durable client-side persistence. The app supports end-to-end invoice management from creation to payment, while preserving theme and data state across sessions. It is designed to be easy to maintain and straightforward to extend toward a backend-powered architecture.

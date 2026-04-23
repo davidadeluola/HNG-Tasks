@@ -71,7 +71,7 @@ export default function InvoiceDetails() {
       <section className="grid gap-6">
         <Link
           to={ROUTES.accounts}
-          className="inline-flex items-center gap-3 text-[15px] font-bold tracking-[-0.25px] text-(--ui-text)"
+          className="inline-flex items-center gap-3 typo-heading-s text-(--ui-text)"
         >
           <ArrowLeft size={16} className="text-(--color-primary)" />
           Go back
@@ -86,10 +86,10 @@ export default function InvoiceDetails() {
 
   const actionButtons = (
     <>
-      <Button variant="edit" onClick={() => setIsEditOpen(true)} className="px-4 sm:flex-none">
+      <Button variant="edit" onClick={() => setIsEditOpen(true)} className="sm:flex-none">
         Edit
       </Button>
-      <Button variant="delete" onClick={handleDelete} disabled={isDeleting} className="px-4 sm:flex-none">
+      <Button variant="delete" onClick={handleDelete} disabled={isDeleting} className="sm:flex-none">
         {isDeleting ? "Deleting..." : "Delete"}
       </Button>
       <Button
